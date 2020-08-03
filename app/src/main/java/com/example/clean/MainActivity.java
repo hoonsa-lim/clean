@@ -1,20 +1,23 @@
 package com.example.clean;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
 public class MainActivity extends AppCompatActivity {
     //tab 관련
     private FragmentTabHost tabHost;
-    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree;
+    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree,tabSpecFour;
     private ImageView imageView1, imageView2, imageView3;
-    private FragmentOne fragmentOne;
-    private FragmentTwo fragmentTwo;
-    private FragmentThree fragmentThree;
+    private FragmentSpaceList fragmentSpaceList;
+    private FragmentTodayList fragmentTodayList;
+    private FragmentCalender fragmentCalender;
+    public FragmentTodoList fragmentTodoList;
 
 
     @Override
@@ -36,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setup(getApplicationContext(), getSupportFragmentManager(), R.id.tabRealContent);
 
         //객체를 만들어서 넣는 식으로 하지 않으면 bundle 사용, fragment 객체에 접근하기 어려움
-        fragmentOne = new FragmentOne();
-        fragmentTwo = new FragmentTwo();
-        fragmentThree = new FragmentThree();
+        fragmentSpaceList = new FragmentSpaceList();
+        fragmentTodayList = new FragmentTodayList();
+        fragmentCalender = new FragmentCalender();
 
         //디자인 작업할 때 이 문장으로 수정
 //        //tab widget에 들어갈 icon 생성
@@ -58,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
         tabSpecThree = tabHost.newTabSpec("THREE").setIndicator("3");
 
         //tab spec을 tabhost에 저장함
-        tabHost.addTab(tabSpecOne, fragmentOne.getClass(), null);
-        tabHost.addTab(tabSpecTwo, fragmentTwo.getClass(), null);
-        tabHost.addTab(tabSpecThree, fragmentThree.getClass(), null);
+        tabHost.addTab(tabSpecOne, fragmentSpaceList.getClass(), null);
+        tabHost.addTab(tabSpecTwo, fragmentTodayList.getClass(), null);
+        tabHost.addTab(tabSpecThree, fragmentCalender.getClass(), null);
 
         //시작 화면을 0번째 tab으로 설정함
         tabHost.setCurrentTab(0);
@@ -70,4 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private void findViewByIdFunction() {
         tabHost = (FragmentTabHost) findViewById(R.id.tabHost);
     }
+
+    //space list fragment에서 전환하기 위한 함수
+//    public void fragmentToDoListShowFunction(){
+//        tabHost.setCurrentTab(3);
+//    }
+
 }

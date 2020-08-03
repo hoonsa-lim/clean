@@ -4,13 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SpaceData implements Parcelable {
-    private byte[] image;
-    private String spaceName;
-    private String toDoName;
-    private String date;
-    private String time;
-    private int repetition;
-    private int alarm;
+    private byte[] image;       //공간 사진
+    private String spaceName;   //공간 이름
+    private String toDoName;    //할일 이름
+    private String date;        //날짜
+    private String time;        //시간
+    private String repetition;  //반복 요일 : null이면 반복 x, 요일이 들어가있으면 해당 요일 반복
+    private int alarm;          //알람 여부 : 1이면 알람, 0이면 알람 안함.
+    private int clear;          //달성 여부
 
     //공간 gridView를 위한 생성자
     public SpaceData(byte[] image, String spaceName) {
@@ -18,8 +19,8 @@ public class SpaceData implements Parcelable {
         this.spaceName = spaceName;
     }
 
-    //
-    public SpaceData(byte[] image, String spaceName, String toDoName, String date, String time, int repetition, int alarm) {
+    //기본 생성자
+    public SpaceData(byte[] image, String spaceName, String toDoName, String date, String time, String repetition, int alarm, int clear) {
         this.image = image;
         this.spaceName = spaceName;
         this.toDoName = toDoName;
@@ -27,6 +28,7 @@ public class SpaceData implements Parcelable {
         this.time = time;
         this.repetition = repetition;
         this.alarm = alarm;
+        this.clear = clear;
     }
 
     protected SpaceData(Parcel in) {
@@ -35,8 +37,9 @@ public class SpaceData implements Parcelable {
         toDoName = in.readString();
         date = in.readString();
         time = in.readString();
-        repetition = in.readInt();
+        repetition = in.readString();
         alarm = in.readInt();
+        clear = in.readInt();
     }
 
     public static final Creator<SpaceData> CREATOR = new Creator<SpaceData>() {
@@ -63,8 +66,9 @@ public class SpaceData implements Parcelable {
         parcel.writeString(toDoName);
         parcel.writeString(date);
         parcel.writeString(time);
-        parcel.writeInt(repetition);
+        parcel.writeString(repetition);
         parcel.writeInt(alarm);
+        parcel.writeInt(clear);
     }
 
     //getter, setter
@@ -108,11 +112,11 @@ public class SpaceData implements Parcelable {
         this.time = time;
     }
 
-    public int getRepetition() {
+    public String getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(int repetition) {
+    public void setRepetition(String repetition) {
         this.repetition = repetition;
     }
 
@@ -122,5 +126,13 @@ public class SpaceData implements Parcelable {
 
     public void setAlarm(int alarm) {
         this.alarm = alarm;
+    }
+
+    public int getClear() {
+        return clear;
+    }
+
+    public void setClear(int clear) {
+        this.clear = clear;
     }
 }

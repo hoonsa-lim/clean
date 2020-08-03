@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/LinearLayout"
+    android:id="@+id/a2Linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F3F0D3"
     android:orientation="vertical">
 
-    <GridView
-        android:id="@+id/gridView"
+    <ListView
+        android:id="@+id/a2ListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:horizontalSpacing="20dp"
-        android:numColumns="2"
-        android:padding="20dp"
-        android:verticalSpacing="20dp">
-
-    </GridView>
+        android:layout_height="match_parent" />
 </LinearLayout>
