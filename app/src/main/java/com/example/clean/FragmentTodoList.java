@@ -57,11 +57,13 @@ public class FragmentTodoList extends Fragment {
         while (cursor.moveToNext() == true) {
             SpaceData spaceData1 = new SpaceData(cursor.getBlob(0), cursor.getString(1),
                     cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                    cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
+                    cursor.getString(5), cursor.getString(6), cursor.getString(7),
+                    cursor.getString(8), cursor.getString(9), cursor.getString(10),
+                    cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
             arrayList.add(spaceData1);
         }
         //adapter 설정
-        listViewAdapter = new ListViewAdapter(mainActivity);
+        listViewAdapter = new ListViewAdapter(mainActivity, true);
         listViewAdapter.setArrayList(arrayList);
         f4ListView.setAdapter(listViewAdapter);
 

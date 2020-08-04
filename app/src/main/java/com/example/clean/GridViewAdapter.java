@@ -75,8 +75,8 @@ public class GridViewAdapter extends BaseAdapter {
         }else {
             if(spaceData.getSpaceName() == ""){
                 ivSpace.setImageResource(R.mipmap.plus);
-                tvSpaceName.setVisibility(View.GONE);
-                linear_gridView_partition.setBackgroundColor(00000000);
+                ivSpace.setBackgroundColor(00000000);
+                tvSpaceName.setText("공간 추가 하기");
             }else{
                 ivSpace.setImageResource(R.drawable.image_room_basic);
             }

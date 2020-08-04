@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -66,6 +67,12 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         toDoListActivity = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,7 +103,7 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         return rootView;
     }
 
-    //반복 spinner 세팅
+    //알람 spinner 세팅
     private void setRepetitionSpinner() {
         arrayList_alarm = new ArrayList<String>();
         arrayList_alarm.add(new String("반복 안함."));
@@ -133,7 +140,11 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         f2BtnBack = view.findViewById(R.id.f2BtnBack);
         f2BtnSave = view.findViewById(R.id.f2BtnSave);
 
+        f2EtToDoName.requestFocus();
 
+        //키보드 보이게 하는 부분
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @Override
@@ -152,38 +163,76 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                 fragmentFinishFunction();
                 break;
             case R.id.f2BtnSave:
-                MyDBHelper myDBHelper = new MyDBHelper(toDoListActivity, "cleanDB");
-                SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
-                byte[] image = spaceData.getImage();
-                String spaceName = spaceData.getSpaceName();
-                String toDoName = f2EtToDoName.getText().toString();
-                String date = f2TvDate.getText().toString();
-                String time = f2TvTime.getText().toString();
-                int alarm = 0;
-                if (f2SpinnerAlarm.getSelectedItem().toString().equals("알림")) {
-                    alarm = 1;
-                }
-                String repetition = null;
                 try {
-                    repetition = f2TvRepetition.getText().toString().substring(8).trim();
-                } catch (NullPointerException e) {
-                    Log.d("FragmentAddToDo", e.getMessage());
-                }
+                    MyDBHelper myDBHelper = new MyDBHelper(toDoListActivity, "cleanDB");
+                    SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+                    byte[] image = spaceData.getImage();
+                    String spaceName = spaceData.getSpaceName();
+                    String toDoName = f2EtToDoName.getText().toString();
+                    String date = f2TvDate.getText().toString();
+                    String time = f2TvTime.getText().toString();
 
-                if (image != null) {
-                    SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("insert into toDoListTBL " +
-                            "values(?, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
-                            + time + "',  '" + repetition + "', " + alarm + ",0);");
-                    sqLiteStatement.bindBlob(1, image);
-                    sqLiteStatement.execute();
-                } else {
-                    String query = "insert into toDoListTBL " +
-                            "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
-                            + time + "',  '" + repetition + "', " + alarm + ",0);";
-                    sqLiteDatabase.execSQL(query);
+                    //시간 00:00으로 자리수 맞추기
+                    String[] array = time.split(":");
+
+                    for (int i = 0; i < array.length; i++) {
+                        if (array[i].length() < 2) {
+                            array[i] = "0" + array[i];
+                        }
+                    }
+                    time = array[0] + ":" + array[1];
+
+                    //알람
+                    int alarm = 0;
+                    if (f2SpinnerAlarm.getSelectedItem().toString().equals("알림")) {
+                        alarm = 1;
+                    }
+
+                    //반복여부
+                    String mon = null;
+                    String tus = null;
+                    String wen = null;
+                    String tur = null;
+                    String fri = null;
+                    String sat = null;
+                    String sun = null;
+                    String[] arrayWeek = {mon, tus, wen, tur, fri, sat, sun};
+                    String repetition = null;
+
+                    repetition = f2TvRepetition.getText().toString();
+                    String[] array1 = repetition.split(":"); //"반복요일 : "를 버리기 위한
+                    String[] array2 = array1[1].trim().split(" ");//선택한 요일이 공백을 기준으로 구분됨
+                    if (array2.length > 0) {//구분된 요일이 1개라도 있다면
+                        for (int i = 0; i < array2.length; i++) {//구분된 요일의 갯수보다 작을 때 반복
+                            String[] week = {"월", "화", "수", "목", "금", "토", "일"};//선택한 요일과 비교하기 위한 배열
+                            for (int j = 0; j < week.length; j++) {
+                                if (array2[i].equals(week[j])) {
+                                    arrayWeek[j] = week[j];
+                                }
+                            }
+                        }
+                    }
+
+                    //쿼리문 실행
+                    if (image != null) {
+                        SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("insert into toDoListTBL " +
+                                "values(?, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                + time + "',  '" + arrayWeek[0] + "',   '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "'," + alarm + ",0);");
+                        sqLiteStatement.bindBlob(1, image);
+                        sqLiteStatement.execute();
+                    } else {
+                        String query = "insert into toDoListTBL " +
+                                "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                + time + "',  '" + arrayWeek[0] + "',  '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "', " + alarm + ",0);";
+                        sqLiteDatabase.execSQL(query);
+                    }
+                    Toast.makeText(toDoListActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
+                    fragmentFinishFunction();
+                } catch (NullPointerException e) {
+                    Log.d("FragmentAddToDo_2", "저장 버튼 시 예외 발생 : " + e.getMessage());
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Log.d("FragmentAddToDo_2", "저장 버튼 시 예외 발생 : " + e.getMessage());
                 }
-                Toast.makeText(toDoListActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
-                toDoListActivity.finish();
                 break;
             default:
                 break;
@@ -201,7 +250,18 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                 switch (num) {
                     case DATEPICKER:
                         DatePicker datePicker = view.findViewById(R.id.datePicker);
-                        f2TvDate.setText(datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth());
+                        String strMonth = null;
+                        int month = (datePicker.getMonth() + 1);
+                        if(month < 10){
+                            strMonth = "0"+month;
+                        }
+                        String strDay = null;
+                        int day = datePicker.getDayOfMonth();
+                        if(day < 10){
+                            strDay = "0"+day;
+                        }
+
+                        f2TvDate.setText(datePicker.getYear() + "-" + strMonth + "-" + strDay);
                         break;
                     case TIMEPICKER:
                         TimePicker timePicker = view.findViewById(R.id.timePicker);
@@ -300,10 +360,11 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
     }
 
     //fragment 종료 함수
-    public void fragmentFinishFunction(){
+    public void fragmentFinishFunction() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(FragmentAddToDo_2.this).commit();
         fragmentManager.popBackStack();
+        toDoListActivity.listLoadFunction();
     }
 }
 

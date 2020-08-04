@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -26,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.OnClickListener {
     //UI
@@ -41,6 +44,9 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
     private byte[] imgbytes;
     private AlertDialog.Builder builder;
 
+    private ArrayList<SpaceData> arrayList = new ArrayList<SpaceData>();
+    private boolean flag_sameName = false;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -50,6 +56,9 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
 
         //UI 찾기
         findViewByIdFunction();
+
+        Intent intent = getIntent();
+        arrayList = intent.getParcelableArrayListExtra("spaceArray");
 
         a1BtnCancel.setOnClickListener(this);
         a1BtnNext.setOnClickListener(this);
@@ -65,7 +74,6 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
         a1BtnImageSetting = findViewById(R.id.a1BtnImageSetting);
         a1FrameLayout = findViewById(R.id.a1FrameLayout);
         a1Linear_big = findViewById(R.id.a1Linear_big);
-
     }
 
     @Override
@@ -73,13 +81,32 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
         switch (view.getId()) {
             case R.id.a1BtnNext:
                 Bundle bundle = new Bundle();
-                String str = a1EtSpaceName.getText().toString();
-                bundle.putParcelable("spaceData", new SpaceData(imgbytes, str));
-                FragmentAddToDo fragmentAddToDo = new FragmentAddToDo();
-                fragmentAddToDo.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.a1FrameLayout, fragmentAddToDo).commit();
-                Toast.makeText(getApplicationContext(), str + "a", Toast.LENGTH_SHORT).show();
-                a1Linear_big.setVisibility(View.INVISIBLE);
+                String str = a1EtSpaceName.getText().toString().trim();
+
+                if(str.equals("")){
+                    Toast.makeText(getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }else{
+                    MyDBHelper myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
+                    SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
+
+                    String query = "select spaceName from toDoListTBL group by spaceName;";
+                    Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+                    while(cursor.moveToNext()){
+                        if(str.equals(cursor.getString(0))){
+                            flag_sameName = true;
+                        }
+                    }
+                    if(flag_sameName == true){
+                        Toast.makeText(getApplicationContext(), "같은 이름의 공간이 존재합니다. \n 다른 이름으로 만들어주세요.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        bundle.putParcelable("spaceData", new SpaceData(imgbytes, str));
+                        FragmentAddToDo fragmentAddToDo = new FragmentAddToDo();
+                        fragmentAddToDo.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.a1FrameLayout, fragmentAddToDo).commit();
+                        a1Linear_big.setVisibility(View.INVISIBLE);
+                    }
+                }
+
                 break;
             case R.id.a1BtnCancel:
                 finish();

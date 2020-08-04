@@ -56,10 +56,10 @@ public class FragmentSpaceList extends Fragment {
         //test data
         arrayList = loadSpaceList();
 
+        //adapter 적용
         gridViewAdapter = new GridViewAdapter(mainActivity);
         gridViewAdapter.setArrayList(arrayList);
-
-        //adapter 적용
+        gridViewAdapter.notifyDataSetChanged();
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,6 +67,7 @@ public class FragmentSpaceList extends Fragment {
                 //맨 마지막의 + 버튼이 눌렸을 때의 이벤트
                 if ((position + 1) == arrayList.size()) {
                     Intent intent = new Intent(mainActivity, AddSpaceAndToDoActivity.class);
+                    intent.putExtra("spaceArray", arrayList);
                     startActivity(intent);
                 } else {
                     SpaceData sd = arrayList.get(position);
@@ -95,10 +96,11 @@ public class FragmentSpaceList extends Fragment {
     }
 
     //data load
-    private ArrayList<SpaceData> loadSpaceList() {
+    public ArrayList<SpaceData> loadSpaceList() {
         ArrayList<SpaceData> arrayList = new ArrayList<SpaceData>();
         MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
         SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
+//        myDBHelper.onUpgrade(sqLiteDatabase, 0,1);
 
         String query = "select image, spaceName from toDoListTBL GROUP by spaceName;";
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
@@ -107,6 +109,8 @@ public class FragmentSpaceList extends Fragment {
             arrayList.add(spaceData);
         }
         arrayList.add(new SpaceData(null, ""));
+        cursor = null;
+        sqLiteDatabase = null;
         return arrayList;
     }
 
@@ -132,9 +136,6 @@ public class FragmentSpaceList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        arrayList = loadSpaceList();
-        gridViewAdapter.notifyDataSetChanged();
-        gridView.invalidate();
     }
 }
 

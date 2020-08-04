@@ -29,15 +29,16 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/f2EtToDoName"
+            android:id="@+id/f3EtToDoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_weight="1"
+            android:editable="true"
             android:ems="10"
             android:gravity="center"
             android:hint="청소, 빨래 등"
-            android:singleLine="false"
+            android:inputType="textPersonName"
             android:textColor="#000000"
             android:textSize="24sp" />
     </LinearLayout>
@@ -64,7 +65,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/f2TvDate"
+            android:id="@+id/f3TvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -100,7 +101,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/f2TvTime"
+            android:id="@+id/f3TvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -155,7 +156,7 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/f2SpinnerRepetition"
+                        android:id="@+id/f3SpinnerRepetition"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
@@ -164,7 +165,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/f2Linear_repetition"
+                android:id="@+id/f3Linear_repetition"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -172,7 +173,7 @@
                 android:visibility="invisible">
 
                 <TextView
-                    android:id="@+id/f2TvRepetition"
+                    android:id="@+id/f3TvRepetition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="165dp"
@@ -217,7 +218,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/f2SpinnerAlarm"
+                android:id="@+id/f3SpinnerAlarm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -240,7 +241,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/f2BtnBack"
+                android:id="@+id/f3BtnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="뒤로"
@@ -255,10 +256,10 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/f2BtnSave"
+                android:id="@+id/f3BtnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="저장"
+                android:text="수정"
                 android:textSize="25sp" />
         </LinearLayout>
 

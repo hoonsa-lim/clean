@@ -9,7 +9,13 @@ public class SpaceData implements Parcelable {
     private String toDoName;    //할일 이름
     private String date;        //날짜
     private String time;        //시간
-    private String repetition;  //반복 요일 : null이면 반복 x, 요일이 들어가있으면 해당 요일 반복
+    private String mon;  //반복 요일
+    private String tus;  //반복 요일
+    private String wen;  //반복 요일
+    private String tur;  //반복 요일
+    private String fri;  //반복 요일
+    private String sat;  //반복 요일
+    private String sun;  //반복 요일
     private int alarm;          //알람 여부 : 1이면 알람, 0이면 알람 안함.
     private int clear;          //달성 여부
 
@@ -20,13 +26,39 @@ public class SpaceData implements Parcelable {
     }
 
     //기본 생성자
-    public SpaceData(byte[] image, String spaceName, String toDoName, String date, String time, String repetition, int alarm, int clear) {
+    public SpaceData(byte[] image, String spaceName, String toDoName, String date, String time,
+                     String mon, String tus, String wen, String tur, String fri, String sat, String sun,
+                     int alarm, int clear) {
         this.image = image;
         this.spaceName = spaceName;
         this.toDoName = toDoName;
         this.date = date;
         this.time = time;
-        this.repetition = repetition;
+        this.mon = mon;
+        this.tus = tus;
+        this.wen = wen;
+        this.tur = tur;
+        this.fri = fri;
+        this.sat = sat;
+        this.sun = sun;
+        this.alarm = alarm;
+        this.clear = clear;
+    }
+
+    //이미지, 공간명 만 가져오지 않는 생성자 : 공간에 대한 할일목록을 볼 때 이미지와 공간명은 이미 있음
+    public SpaceData(String toDoName, String date, String time,
+                     String mon, String tus, String wen, String tur, String fri, String sat, String sun,
+                     int alarm, int clear) {
+        this.toDoName = toDoName;
+        this.date = date;
+        this.time = time;
+        this.mon = mon;
+        this.tus = tus;
+        this.wen = wen;
+        this.tur = tur;
+        this.fri = fri;
+        this.sat = sat;
+        this.sun = sun;
         this.alarm = alarm;
         this.clear = clear;
     }
@@ -37,7 +69,13 @@ public class SpaceData implements Parcelable {
         toDoName = in.readString();
         date = in.readString();
         time = in.readString();
-        repetition = in.readString();
+        mon = in.readString();
+        tus = in.readString();
+        wen = in.readString();
+        tur = in.readString();
+        fri = in.readString();
+        sat = in.readString();
+        sun = in.readString();
         alarm = in.readInt();
         clear = in.readInt();
     }
@@ -66,12 +104,19 @@ public class SpaceData implements Parcelable {
         parcel.writeString(toDoName);
         parcel.writeString(date);
         parcel.writeString(time);
-        parcel.writeString(repetition);
+        parcel.writeString(mon);
+        parcel.writeString(tus);
+        parcel.writeString(wen);
+        parcel.writeString(tur);
+        parcel.writeString(fri);
+        parcel.writeString(sat);
+        parcel.writeString(sun);
         parcel.writeInt(alarm);
         parcel.writeInt(clear);
     }
 
     //getter, setter
+
     public byte[] getImage() {
         return image;
     }
@@ -112,12 +157,60 @@ public class SpaceData implements Parcelable {
         this.time = time;
     }
 
-    public String getRepetition() {
-        return repetition;
+    public String getMon() {
+        return mon;
     }
 
-    public void setRepetition(String repetition) {
-        this.repetition = repetition;
+    public void setMon(String mon) {
+        this.mon = mon;
+    }
+
+    public String getTus() {
+        return tus;
+    }
+
+    public void setTus(String tus) {
+        this.tus = tus;
+    }
+
+    public String getWen() {
+        return wen;
+    }
+
+    public void setWen(String wen) {
+        this.wen = wen;
+    }
+
+    public String getTur() {
+        return tur;
+    }
+
+    public void setTur(String tur) {
+        this.tur = tur;
+    }
+
+    public String getFri() {
+        return fri;
+    }
+
+    public void setFri(String fri) {
+        this.fri = fri;
+    }
+
+    public String getSat() {
+        return sat;
+    }
+
+    public void setSat(String sat) {
+        this.sat = sat;
+    }
+
+    public String getSun() {
+        return sun;
+    }
+
+    public void setSun(String sun) {
+        this.sun = sun;
     }
 
     public int getAlarm() {
