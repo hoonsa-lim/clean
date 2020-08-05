@@ -78,7 +78,7 @@ public class ListViewAdapter extends BaseAdapter {
         TextView par_time = view.findViewById(R.id.par_time);
         TextView par_alarm = view.findViewById(R.id.par_alarm);
         TextView par_tvRepetition = view.findViewById(R.id.par_tvRepetition);
-        CheckBox par_checkBox = view.findViewById(R.id.par_checkBox);
+        final CheckBox par_checkBox = view.findViewById(R.id.par_checkBox);
         LinearLayout par_linear = view.findViewById(R.id.par_linear);
         LinearLayout par_linear_checkBox = view.findViewById(R.id.par_linear_checkBox);
         LinearLayout par_linear_text = view.findViewById(R.id.par_linear_text);
@@ -109,22 +109,38 @@ public class ListViewAdapter extends BaseAdapter {
             setValuesFunction(spaceData, par_toDoName, par_time, par_alarm, par_tvRepetition);
 
             //이벤트
-//            par_checkBox.setOnClickListener(new View.OnClickListener() {
-//                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//                @Override
-//                public void onClick(View view) {
-//                    par_big_linear.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if(flag == true){
-//                                par_big_linear.setTranslationX(0f);
-//                                par_big_linear.setAlpha(1f);
-//                                Toast.makeText(context, flag + "asd", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//                }
-//            });
+            par_checkBox.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onClick(View view) {
+                    if (par_checkBox.isChecked() == true) {
+                        par_big_linear.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                par_big_linear.setTranslationX(0f);
+                                par_big_linear.setAlpha(1f);
+                                Toast.makeText(context, flag + "asd", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    if (par_checkBox.isChecked() == true) {
+                        try {
+                            MyDBHelper myDBHelper = new MyDBHelper(context, "cleanDB");
+                            SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+
+                            String query = "UPDATE toDoListTBL SET clear = 1 " +
+                                    "where spaceName = '" + spaceData.getSpaceName() + "' " +
+                                    "and toDoName = '" + spaceData.getToDoName() + "' " +
+                                    "and date = '" + spaceData.getDate() + "' " +
+                                    "and time = '" + spaceData.getTime() + "';";
+                            sqLiteDatabase.execSQL(query);
+
+                        } catch (Exception e) {
+                            Log.d("ListViewAdapter", e.getMessage());
+                        }
+                    }
+                }
+            });
         }
         return view;
     }

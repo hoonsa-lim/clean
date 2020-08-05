@@ -338,10 +338,14 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                     linearLayout = (LinearLayout) layoutInflater.inflate(R.layout.dialog_repetition, null);
                     dialogFunction(linearLayout, REPETITION_CHECKBOX);
                     f1Linear_repetition.setVisibility(View.VISIBLE);
+                }else{
+                    Toast.makeText(addSpaceAndToDoActivity,  "asdasdf", Toast.LENGTH_SHORT).show();
+                    f1TvRepetition.setText("");
+                    f1Linear_repetition.setVisibility(View.INVISIBLE);
                 }
                 break;
             case R.id.f1SpinnerAlarm:
-                String strAlarm = (String) f1SpinnerRepetition.getSelectedItem();
+                String strAlarm = (String) f1SpinnerAlarm.getSelectedItem();
                 if (strAlarm.equals("알림")) {
 
                 }

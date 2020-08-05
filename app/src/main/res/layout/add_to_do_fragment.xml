@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="날         짜"
+            android:text="시작 날짜"
             android:textSize="24sp" />
 
         <TextView
@@ -100,7 +100,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="시         간"
+            android:text="시작 시간"
             android:textSize="24sp" />
 
         <TextView

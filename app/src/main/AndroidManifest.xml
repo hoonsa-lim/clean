@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ToDoListActivity"></activity>
         <activity android:name=".AddSpaceAndToDoActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -18,11 +17,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".KakaoTest">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="kakaolink"
+                    android:scheme="5af85f5957afe27d852c81905b57dbcf" />
+            </intent-filter>
+
+
+        </activity>
 
         <meta-data
-            android:name="com.kakao.adk.AppKey"
-            android:value="{62f609fa5f5b6cc54651ada50abec5ac}"/>
-
+            android:name="com.kakao.sdk.AppKey"
+            android:value="5af85f5957afe27d852c81905b57dbcf" />
     </application>
 
 </manifest>

@@ -56,44 +56,41 @@ public class FragmentTodayList extends Fragment {
         listLoadFunction();
 
 //        f6TvToday.
-
-        f6ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SpaceData sd = arrayList.get(i);
-                sd.setClear(1);
-
-                View view1 = listViewAdapter.getView(i,f6ListView, viewGroup);
-                CheckBox checkBox = view1.findViewById(R.id.par_checkBox);
-                final LinearLayout linearLayout = view1.findViewById(R.id.par_big_linear);
-                if(checkBox.isChecked() == true){
-                    try {
-                        MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
-                        SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
-
-                        String query = "UPDATE toDoListTBL SET clear = 1 " +
-                                "where spaceName = '" + sd.getSpaceName() + "' " +
-                                "and toDoName = '" + sd.getToDoName() + "' " +
-                                "and date = '" + sd.getDate() + "' " +
-                                "and time = '" + sd.getTime() + "';";
-                        sqLiteDatabase.execSQL(query);
-                        linearLayout.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                    linearLayout.setTranslationX(0f);
-                                    linearLayout.setAlpha(1f);
-                            }
-                        });
-                    }catch(Exception e){
-                        Log.d("FragmentTodayList", e.getMessage());
-                    }
-                }
-                arrayList.remove(i);
-                f6ListView.invalidate();
-                listViewAdapter.notifyDataSetInvalidated();
-            }
-        });
+//
+//        f6ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                SpaceData sd = arrayList.get(i);
+//                sd.setClear(1);
+//
+//                if(checkBox.isChecked() == true){
+//                    try {
+//                        MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
+//                        SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+//
+//                        String query = "UPDATE toDoListTBL SET clear = 1 " +
+//                                "where spaceName = '" + sd.getSpaceName() + "' " +
+//                                "and toDoName = '" + sd.getToDoName() + "' " +
+//                                "and date = '" + sd.getDate() + "' " +
+//                                "and time = '" + sd.getTime() + "';";
+//                        sqLiteDatabase.execSQL(query);
+//                        linearLayout.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                    linearLayout.setTranslationX(0f);
+//                                    linearLayout.setAlpha(1f);
+//                            }
+//                        });
+//                    }catch(Exception e){
+//                        Log.d("FragmentTodayList", e.getMessage());
+//                    }
+//                }
+//                arrayList.remove(i);
+//                f6ListView.invalidate();
+//                listViewAdapter.notifyDataSetInvalidated();
+//            }
+//        });
 
 
 

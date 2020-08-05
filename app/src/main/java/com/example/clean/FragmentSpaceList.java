@@ -83,9 +83,10 @@ public class FragmentSpaceList extends Fragment {
                     startActivity(intent);
                 } else {
                     SpaceData sd = arrayList.get(position);
-                    Intent intent = new Intent(mainActivity, ToDoListActivity.class);
-                    intent.putExtra("spaceData",sd);
-                    startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("spaceDataFromSpaceList",sd);
+                    mainActivity.fragmentTodoList.setArguments(bundle);
+                    mainActivity.tabHost.setCurrentTab(4);
                 }
             }
         });
