@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,13 +15,20 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+
+import static androidx.annotation.Dimension.DP;
 
 public class ListViewAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<SpaceData> arrayList;
     private boolean flag_visible_checkBox = false; // false 면 checkbox invisible
+    private LinearLayout par_big_linear;
+    private boolean flag;
 
     public ListViewAdapter(Context context, boolean flag_visible_checkBox) {
         this.context = context;
@@ -63,10 +71,7 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        //재활용
-        if (view == null) {
-            view = layoutInflater.inflate(R.layout.listview_partition, null);
-        }
+        view = layoutInflater.inflate(R.layout.listview_partition, null);
 
         //ui 찾기
         TextView par_toDoName = view.findViewById(R.id.par_toDoName);
@@ -76,78 +81,77 @@ public class ListViewAdapter extends BaseAdapter {
         CheckBox par_checkBox = view.findViewById(R.id.par_checkBox);
         LinearLayout par_linear = view.findViewById(R.id.par_linear);
         LinearLayout par_linear_checkBox = view.findViewById(R.id.par_linear_checkBox);
-        LinearLayout par_big_linear = view.findViewById(R.id.par_big_linear);
+        LinearLayout par_linear_text = view.findViewById(R.id.par_linear_text);
+        par_big_linear = view.findViewById(R.id.par_big_linear);
 
-        //값 적용
+        //listview adapter 2번째 프래그 먼트에서 사용할 때와 1번째 프래그먼트에서 사용할 때를 구분함
         final SpaceData spaceData = arrayList.get(i);
-        if (spaceData.getSpaceName() == "") {
-            par_toDoName.setText(new String(" + 할일 추가하기"));
-            par_toDoName.setTextSize(20);
-            par_toDoName.setPadding(20,20,20,20);
-            par_toDoName.setGravity(Gravity.CENTER);
-            par_checkBox.setVisibility(View.GONE);
-            par_linear.setVisibility(View.GONE);
-            par_linear_checkBox.setVisibility(View.GONE);
-            par_big_linear.setBackgroundColor(Color.rgb(162, 255, 255));
+        if (flag_visible_checkBox == false) {
+
+            //첫번째 fragment
+            par_checkBox.setVisibility(View.INVISIBLE);
+            if (spaceData.getSpaceName() == "") {
+                par_toDoName.setText(new String(" + 할일 추가하기"));
+                par_toDoName.setTextSize(20);
+                par_toDoName.setPadding(20, 20, 20, 20);
+                par_toDoName.setGravity(Gravity.CENTER);
+                par_checkBox.setVisibility(View.GONE);
+                par_linear.setVisibility(View.GONE);
+                par_linear_checkBox.setVisibility(View.GONE);
+                par_linear_text.setGravity(Gravity.CENTER);
+                par_big_linear.setBackgroundColor(Color.WHITE);
+            } else {
+                setValuesFunction(spaceData, par_toDoName, par_time, par_alarm, par_tvRepetition);
+            }
         } else {
-            par_toDoName.setText(spaceData.getToDoName());
-            par_time.setText(spaceData.getTime());
-            if(spaceData.getAlarm() == 0){
-                par_alarm.setText("알람 x");
-            }else{
-                par_alarm.setText("알람 o");
-            }
-            String repetition = "";
-            String[] str = {spaceData.getMon(), spaceData.getTus() ,spaceData.getWen() ,
-                    spaceData.getTur() ,spaceData.getFri() ,spaceData.getSat() ,spaceData.getSun()};
-            int count = 0;
-            for(int k = 0; k < str.length; k++){
-                if(!str[k].equals("null")){
-                    repetition = repetition + " " + str[k];
-                    count++;
-                }
-            }
-            if(count == 7){
-                par_tvRepetition.setText("매일");
-            }else{
-                par_tvRepetition.setText(repetition);
-            }
+            //두번째 fragment
+            par_checkBox.setVisibility(View.VISIBLE);
+            setValuesFunction(spaceData, par_toDoName, par_time, par_alarm, par_tvRepetition);
 
-            if(flag_visible_checkBox == false){
-                par_checkBox.setVisibility(View.INVISIBLE);
-            }else{
-                par_checkBox.setVisibility(View.VISIBLE);
-            }
-
+            //이벤트
+//            par_checkBox.setOnClickListener(new View.OnClickListener() {
+//                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//                @Override
+//                public void onClick(View view) {
+//                    par_big_linear.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if(flag == true){
+//                                par_big_linear.setTranslationX(0f);
+//                                par_big_linear.setAlpha(1f);
+//                                Toast.makeText(context, flag + "asd", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    });
+//                }
+//            });
         }
-
-        //이벤트
-        par_checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                try {
-                    MyDBHelper myDBHelper = new MyDBHelper(context, "cleanDB");
-                    SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
-                    String query = null;
-                    if (b == true) {
-                        query = "UPDATE toDoListTBL SET clear = 1 " +
-                                "WHERE spaceName = '" + spaceData.getSpaceName() + "' " +
-                                "AND  toDoName = '" + spaceData.getToDoName() + "' " +
-                                "AND date = '" + spaceData.getDate() + "' " +
-                                "AND time = '" + spaceData.getTime() + "';";
-                    } else {
-                        query = "UPDATE toDoListTBL SET clear = 0 " +
-                                "WHERE spaceName = '" + spaceData.getSpaceName() + "' " +
-                                "AND  toDoName = '" + spaceData.getToDoName() + "' " +
-                                "AND date = '" + spaceData.getDate() + "' " +
-                                "AND time = '" + spaceData.getTime() + "';";
-                    }
-                    sqLiteDatabase.execSQL(query);
-                }catch (Exception e){
-                    Log.d("ListViewAdapter", e.getMessage());
-                }
-            }
-        });
         return view;
+    }
+
+    private void setValuesFunction(SpaceData spaceData, TextView par_toDoName, TextView par_time, TextView par_alarm, TextView par_tvRepetition) {
+        //값 적용
+        par_toDoName.setText(spaceData.getToDoName());
+        par_time.setText(spaceData.getTime());
+        if (spaceData.getAlarm() == 0) {
+            par_alarm.setText("알람 x");
+        } else {
+            par_alarm.setText("알람 o");
+        }
+        String repetition = "";
+        String[] str = {spaceData.getMon(), spaceData.getTus(), spaceData.getWen(),
+                spaceData.getTur(), spaceData.getFri(), spaceData.getSat(), spaceData.getSun()};
+        int count = 0;
+        for (int k = 0; k < str.length; k++) {
+            if (!str[k].equals("null")) {
+                repetition = repetition + " " + str[k];
+                count++;
+            }
+        }
+        if (count == 7) {
+            par_tvRepetition.setText("매일");
+        } else {
+            par_tvRepetition.setText(repetition);
+        }
     }
 }

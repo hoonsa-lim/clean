@@ -160,6 +160,7 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                 dialogFunction(linearLayout, TIMEPICKER);
                 break;
             case R.id.f2BtnBack:
+                toDoListActivity.a2Linear.setVisibility(View.VISIBLE);
                 fragmentFinishFunction();
                 break;
             case R.id.f2BtnSave:
@@ -364,7 +365,10 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(FragmentAddToDo_2.this).commit();
         fragmentManager.popBackStack();
+        toDoListActivity.a2ListView.setVisibility(View.VISIBLE);
         toDoListActivity.listLoadFunction();
     }
+
+
 }
 

@@ -214,14 +214,17 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                                 + time + "',  '" + arrayWeek[0] + "',   '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "'," + alarm + ",0);");
                         sqLiteStatement.bindBlob(1, image);
                         sqLiteStatement.execute();
+
                     } else {
                         String query = "insert into toDoListTBL " +
                                 "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
                                 + time + "',  '" + arrayWeek[0] + "',  '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "', " + alarm + ",0);";
                         sqLiteDatabase.execSQL(query);
+
                     }
-                    Toast.makeText(addSpaceAndToDoActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
+
                     addSpaceAndToDoActivity.finish();
+                    fragmentFinishFunction();
                 } catch (NullPointerException e) {
                     Log.d("FragmentAddToDo", "저장 버튼 시 예외 발생 : " + e.getMessage());
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -246,13 +249,13 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                         DatePicker datePicker = view.findViewById(R.id.datePicker);
                         String strMonth = null;
                         int month = (datePicker.getMonth() + 1);
-                        if(month < 10){
-                            strMonth = "0"+month;
+                        if (month < 10) {
+                            strMonth = "0" + month;
                         }
                         String strDay = null;
                         int day = datePicker.getDayOfMonth();
-                        if(day < 10){
-                            strDay = "0"+day;
+                        if (day < 10) {
+                            strDay = "0" + day;
                         }
 
                         f1TvDate.setText(datePicker.getYear() + "-" + strMonth + "-" + strDay);

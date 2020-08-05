@@ -27,6 +27,7 @@
                 android:id="@+id/a1IvSpaceImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
+                android:background="#000000"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/image_room_basic" />
 

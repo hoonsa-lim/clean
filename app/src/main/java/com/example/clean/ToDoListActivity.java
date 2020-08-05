@@ -7,7 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +33,12 @@ import java.util.ArrayList;
 public class ToDoListActivity extends AppCompatActivity {
     //UI
     public ListView a2ListView;
-    private FrameLayout a2Linear;
+    public static LinearLayout a2Linear;
+    private FrameLayout a2FrameLayout;
+    private ImageView a2IvImage;
+    private TextView a2TvSpaceName;
+
+    //
     private FragmentAddToDo_2 fragmentAddToDo_2= new FragmentAddToDo_2();
     private FragmentAddToDo_3 fragmentAddToDo_3= new FragmentAddToDo_3();
 
@@ -38,6 +46,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private SpaceData spaceData;
     public ListViewAdapter listViewAdapter;
 
+    //팝업메뉴
     private Point p;
 
     @Override
@@ -61,14 +70,8 @@ public class ToDoListActivity extends AppCompatActivity {
                     bundle.putParcelable("spaceData",spaceData);
                     fragmentAddToDo_2.setArguments(bundle);
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.a2Linear, fragmentAddToDo_2).commit();
-                } else if(position < arrayList.size()){
-
-
-
-
-
-
+                    getSupportFragmentManager().beginTransaction().replace(R.id.a2FrameLayout, fragmentAddToDo_2).commit();
+                    a2Linear.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -81,7 +84,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 sd.setImage(spaceData.getImage());
                 p = new Point();
                 p.x = (int) view.getX()+600;
-                p.y = (int) view.getY()+230;
+                p.y = (int) view.getY()+1000;
                 showPopup(ToDoListActivity.this, p, sd);
                 return true;
             }
@@ -90,10 +93,21 @@ public class ToDoListActivity extends AppCompatActivity {
 
     //목록 로드 함수
     public void listLoadFunction() {
-        //bundle로 클릭한 공간 명 전달 받기
+        //bundle로 클릭한 공간 명, 이미지 전달 받기
         Intent intent = getIntent();
         spaceData = intent.getParcelableExtra("spaceData");
+        
         String spaceName = spaceData.getSpaceName();
+        byte[] data = spaceData.getImage();
+        if (spaceData.getImage() != null) {
+            Bitmap imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            a2IvImage.setImageBitmap(imageBitmap);
+        }else {
+            a2IvImage.setImageResource(R.drawable.image_room_basic);
+        }
+        a2TvSpaceName.setText(spaceData.getSpaceName());
+
+
 
         //db load
         arrayList.clear();
@@ -121,13 +135,16 @@ public class ToDoListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        a2Linear.setVisibility(View.VISIBLE);
     }
 
     //ui 찾기
     private void findViewByIdFunction() {
         a2ListView = findViewById(R.id.a2ListView);
+        a2FrameLayout = findViewById(R.id.a2FrameLayout);
         a2Linear = findViewById(R.id.a2Linear);
+        a2IvImage = findViewById(R.id.a2IvImage);
+        a2TvSpaceName = findViewById(R.id.a2TvSpaceName);
     }
 
     // The method that displays the popup.
@@ -163,7 +180,7 @@ public class ToDoListActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("spaceData1",sd);
                 fragmentAddToDo_3.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.a2Linear, fragmentAddToDo_3).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.a2FrameLayout, fragmentAddToDo_3).commit();
                 popup.dismiss();
             }
         });

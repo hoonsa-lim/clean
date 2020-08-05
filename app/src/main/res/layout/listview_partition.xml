@@ -5,7 +5,8 @@
     android:id="@+id/par_big_linear"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:layout_margin="4dp"
+    android:background="@drawable/listview_border_stroke"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
     android:paddingLeft="20dp"
@@ -17,6 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -31,6 +33,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/par_linear_text"
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

@@ -32,7 +32,7 @@ public class FragmentCalender extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.calender_fragment, container, false);
-
+        getActivity().setTitle("달력");
         //ui 찾기
         findViewByIdFunction(viewGroup);
 

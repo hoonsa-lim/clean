@@ -86,9 +86,9 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
                 if(str.equals("")){
                     Toast.makeText(getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
+                    flag_sameName = false;
                     MyDBHelper myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
                     SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
-
                     String query = "select spaceName from toDoListTBL group by spaceName;";
                     Cursor cursor = sqLiteDatabase.rawQuery(query, null);
                     while(cursor.moveToNext()){
