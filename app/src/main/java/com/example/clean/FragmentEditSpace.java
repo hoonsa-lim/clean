@@ -101,7 +101,6 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
         return viewGroup;
     }
 
-
     //ui 찾기
     private void findViewByIdFunction(ViewGroup viewGroup) {
         a1IvSpaceImage = viewGroup.findViewById(R.id.a1IvSpaceImage);
@@ -132,33 +131,40 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
                 String str = a1EtSpaceName.getText().toString().trim();
                 try {
                     if (str.equals("")) {
-                        Toast.makeText(mainActivity, "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, "공간명을 입력해주세요.", Toast.LENGTH_SHORT).show();
                     } else {
                         flag_sameName = false;
                         myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
                         sqLiteDatabase = myDBHelper.getReadableDatabase();
                         String query = "select spaceName from toDoListTBL group by spaceName;";
                         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+                        //같은 이름이 db에 있으면 flag = true;
                         while (cursor.moveToNext()) {
                             if (str.equals(cursor.getString(0))) {
                                 flag_sameName = true;
                             }
                         }
                         cursor = null;
+                        //저장하려는 이름이 db에 있는지 확인
                         if (flag_sameName == true) {
+                            //원래 이름과 같을 경우에는 저장가능하게 설계
                             if(!str.equals(spaceData.getSpaceName())){
-                                Toast.makeText(mainActivity, "같은 이름의 공간이 존재합니다. \n 다른 이름으로 만들어주세요.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mainActivity, "같은 이름의 공간이 존재합니다.", Toast.LENGTH_SHORT).show();
                             }else{
-                                executeUpdateQuery(str);
+                                //원래 이름과 같은데, 이미지 변경도 하지 않았다면 토스트 띄움
+//                                if(){
+//
+//                                }
+                                executeUpdateQuery(spaceData.getSpaceName(), str);
                             }
                         } else {
-                            executeUpdateQuery(str);
+                            //같은 이름이 없을 때
+                            executeUpdateQuery(spaceData.getSpaceName(), str);
                         }
                     }
                 }catch (Exception e){
                     Log.d("FragmentEditSpace", "db 예외 발생 : " + e.getMessage());
                 }
-
 
                 break;
             case R.id.a1BtnCancel:
@@ -196,16 +202,16 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
     }
 
     //공간 수정 쿼리 실행 문
-    private void executeUpdateQuery(String str) throws Exception{
+    private void executeUpdateQuery(String before, String after) throws Exception{
         sqLiteDatabase = myDBHelper.getWritableDatabase();
         if(spaceData.getImage() != null){
-            String query1 = "update toDoListTBL set spaceName = '" + str + "', image = ? where spaceName = '" + str + "';";
+            String query1 = "update toDoListTBL set spaceName = '" + after + "', image = ? where spaceName = '" + before + "';";
             SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement(query1);
             sqLiteStatement.bindBlob(1, spaceData.getImage());
             sqLiteStatement.execute();
             sqLiteStatement = null;
         }else{
-            String query = "update toDoListTBL set spaceName = '" + str + "', image = null where spaceName = '" + str + "';";
+            String query = "update toDoListTBL set spaceName = '" + after + "', image = null where spaceName = '" + before + "';";
             sqLiteDatabase.execSQL(query);
         }
         sqLiteDatabase = null;
@@ -240,20 +246,8 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
     }
     //fragment 종료 함수
     public void fragmentFinishFunction() {
-        mainActivity.main_widget_linear.setVisibility(View.VISIBLE);
         mainActivity.tabHost.setCurrentTab(0);
-    }
-
-    static View v; // 프래그먼트의 뷰 인스턴스
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if(v!=null){
-            ViewGroup parent = (ViewGroup)v.getParent();
-            if(parent!=null){
-                parent.removeView(v);
-            }
-        }
+        mainActivity.main_widget_linear.setVisibility(View.VISIBLE);
     }
 }
 

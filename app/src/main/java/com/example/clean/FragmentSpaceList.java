@@ -60,7 +60,7 @@ public class FragmentSpaceList extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.spacelist_fragment, container, false);
-        getActivity().setTitle("공간 및 할일 추가");
+        getActivity().setTitle("관리 공간 목록");
 
         //ui 찾기
         findViewByIdFunction(viewGroup);
@@ -106,6 +106,8 @@ public class FragmentSpaceList extends Fragment {
             }
         });
 
+
+
         return viewGroup;
     }
 
@@ -138,7 +140,12 @@ public class FragmentSpaceList extends Fragment {
     public void onResume() {
         super.onResume();
         arrayList = loadSpaceList();
+        gridViewAdapter.notifyDataSetChanged();
         mainActivity.main_widget_linear.setVisibility(View.VISIBLE);
+
+
+
+
     }
 
 

@@ -70,7 +70,7 @@ public class FragmentTodoList extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_todolist, container, false);
-
+        getActivity().setTitle("관리 공간");
         //ui 찾기
         findViewByIdFunction(viewGroup);
 

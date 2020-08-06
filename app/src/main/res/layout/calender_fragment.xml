@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/ibPrevious"
+            android:id="@+id/f6IbPrevious"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -25,7 +25,7 @@
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
-            android:id="@+id/tvMonth"
+            android:id="@+id/f6TvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -36,7 +36,7 @@
             android:textSize="25dp" />
 
         <ImageButton
-            android:id="@+id/ibNext"
+            android:id="@+id/f6IbNext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"

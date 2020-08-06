@@ -78,13 +78,15 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         f2TvRepetition.setText("");
         f2SpinnerRepetition.setSelection(0);
         f2SpinnerAlarm.setSelection(0);
+
+        mainActivity.main_widget_linear.setVisibility(View.GONE);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.add_to_do_fragment, container, false);
-
+        getActivity().setTitle("할일 추가");
         //UI 찾기
         findViewByIdFunction(rootView);
 
@@ -270,13 +272,16 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                         int month = (datePicker.getMonth() + 1);
                         if (month < 10) {
                             strMonth = "0" + month;
+                        }else{
+                            strMonth = String.valueOf(month);
                         }
                         String strDay = null;
                         int day = datePicker.getDayOfMonth();
                         if (day < 10) {
                             strDay = "0" + day;
+                        }else{
+                            strDay = String.valueOf(day);
                         }
-
                         f2TvDate.setText(datePicker.getYear() + "-" + strMonth + "-" + strDay);
                         break;
                     case TIMEPICKER:

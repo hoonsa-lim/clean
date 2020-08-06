@@ -6,12 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,14 +34,20 @@ import java.util.Date;
 public class FragmentTodayList extends Fragment {
     private MainActivity mainActivity;
 
-    private ArrayList<SpaceData> arrayList = new ArrayList<SpaceData>();
-    public ListViewAdapter listViewAdapter;
+    private ArrayList<TodayListData> arrayList = new ArrayList<TodayListData>();
+    public ListViewAdapter_todayList listViewAdapter;
     private ListView f6ListView;
-    private TextView f6TvToday, f6Text;
+    private TextView f6TvDate;
+    private ImageButton f6IbNonClear, f6IbClear;
+    private final int NON_CLEAR = 0;
+    private final int CLEAR = 1;
+    private LinearLayout linearLayout_getview;
+    private boolean flag_page = false;
 
     //날짜
     private String toDayDate;
     private String dayOfWeek1;
+    private long first_time;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,84 +63,119 @@ public class FragmentTodayList extends Fragment {
 
         //ui 찾기
         findViewByIdFunction(viewGroup);
-        listLoadFunction();
 
-//        f6TvToday.
-//
-//        f6ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                SpaceData sd = arrayList.get(i);
-//                sd.setClear(1);
-//
-//                if(checkBox.isChecked() == true){
-//                    try {
-//                        MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
-//                        SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
-//
-//                        String query = "UPDATE toDoListTBL SET clear = 1 " +
-//                                "where spaceName = '" + sd.getSpaceName() + "' " +
-//                                "and toDoName = '" + sd.getToDoName() + "' " +
-//                                "and date = '" + sd.getDate() + "' " +
-//                                "and time = '" + sd.getTime() + "';";
-//                        sqLiteDatabase.execSQL(query);
-//                        linearLayout.animate().alpha(0f).translationX(1000f).setDuration(700).withEndAction(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                    linearLayout.setTranslationX(0f);
-//                                    linearLayout.setAlpha(1f);
-//                            }
-//                        });
-//                    }catch(Exception e){
-//                        Log.d("FragmentTodayList", e.getMessage());
-//                    }
-//                }
-//                arrayList.remove(i);
-//                f6ListView.invalidate();
-//                listViewAdapter.notifyDataSetInvalidated();
-//            }
-//        });
+        //list load
+        listLoadFunction(NON_CLEAR);
 
+        //값 세팅
+        setUIValues();
 
+        //listview click 이벤트
+        f6ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                CheckBox checkBox = view.findViewById(R.id.par_checkBox);
+                if(checkBox.isChecked() == true){
+                    linearLayout_getview = (LinearLayout) view;
+                    linearLayout_getview.animate().translationX(400f).alpha(1f).scaleX(1f).scaleY(1f).setDuration(1000).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            linearLayout_getview.setTranslationX(0f);
+                            linearLayout_getview.setAlpha(0.1f);
+                            linearLayout_getview.setScaleX(0.5f);
+                            linearLayout_getview.setScaleY(0.5f);
+
+                            TodayListData todayListData = arrayList.get(i);
+                            MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
+                            SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+                            String query = null;
+                            if(flag_page == false){
+                                query = "update todayListTBL set t_clear = 1 where pk_fullName = '"+ todayListData.getPk_fullName()+"';";
+                            }else{
+                                query = "update todayListTBL set t_clear = 0 where pk_fullName = '"+ todayListData.getPk_fullName()+"';";
+                            }
+                            sqLiteDatabase.execSQL(query);
+
+                            arrayList.remove(i);
+                            f6ListView.invalidate();
+                            listViewAdapter.notifyDataSetInvalidated();
+                        }
+                    }).start();
+                }
+            }
+        });
+        f6IbNonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listLoadFunction(NON_CLEAR);
+                listViewAdapter.notifyDataSetChanged();
+            }
+        });
+        f6IbClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listLoadFunction(CLEAR);
+                listViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         return viewGroup;
     }
 
+    //값 세팅
+    private void setUIValues() {
+        toDayDate = toDayDate + " (" + dayOfWeek1 + ")";
+        f6TvDate.setText(toDayDate);
+    }
 
     //ui 찾기
     private void findViewByIdFunction(ViewGroup viewGroup) {
         f6ListView = viewGroup.findViewById(R.id.f6ListView);
-        f6TvToday = viewGroup.findViewById(R.id.f6TvToday);
-        f6Text = viewGroup.findViewById(R.id.f6Text);
+        f6TvDate = viewGroup.findViewById(R.id.f6TvDate);
+        f6IbNonClear = viewGroup.findViewById(R.id.f6IbNonClear);
+        f6IbClear = viewGroup.findViewById(R.id.f6IbClear);
     }
 
     //목록 로드 함수
-    public void listLoadFunction() {
+    public void listLoadFunction(int clearOrNonClear) {
+        if(clearOrNonClear == 0){
+            flag_page = false;
+        }else{
+            flag_page = true;
+        }
+
         //시스템 날짜 받기
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
-        toDayDate = simpleDate.format(mDate);
+        toDayDate = simpleDate.format(mDate).trim();
 
         //요일받기
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         dayOfWeek1 = "";
         switch (dayOfWeek) {
-            case 1:dayOfWeek1 = "일";
+            case 1:
+                dayOfWeek1 = "일";
                 break;
-            case 2:dayOfWeek1 = "월";
+            case 2:
+                dayOfWeek1 = "월";
                 break;
-            case 3:dayOfWeek1 = "화";
+            case 3:
+                dayOfWeek1 = "화";
                 break;
-            case 4:dayOfWeek1 = "수";
+            case 4:
+                dayOfWeek1 = "수";
                 break;
-            case 5:dayOfWeek1 = "목";
+            case 5:
+                dayOfWeek1 = "목";
                 break;
-            case 6:dayOfWeek1 = "금";
+            case 6:
+                dayOfWeek1 = "금";
                 break;
-            case 7:dayOfWeek1 = "토";
+            case 7:
+                dayOfWeek1 = "토";
                 break;
             default:
                 break;
@@ -141,30 +186,18 @@ public class FragmentTodayList extends Fragment {
             arrayList.clear();
             MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
             SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
-            String query = "select * from toDoListTBL where date = '" + toDayDate + "' and clear = 0;";
+            String query = "select * from todayListTBL where t_today = '" + toDayDate + "' and t_clear = "+ clearOrNonClear +";";
             Cursor cursor = sqLiteDatabase.rawQuery(query, null);
             while (cursor.moveToNext() == true) {
-                SpaceData spaceData1 = new SpaceData(cursor.getBlob(0), cursor.getString(1),
+                TodayListData todayListData = new TodayListData(cursor.getString(0),cursor.getString(1),
                         cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                        cursor.getString(5), cursor.getString(6), cursor.getString(7),
-                        cursor.getString(8), cursor.getString(9), cursor.getString(10),
-                        cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
-                arrayList.add(spaceData1);
+                        cursor.getString(5), cursor.getString(6), cursor.getInt(7),
+                        cursor.getInt(8), cursor.getBlob(9));
+                arrayList.add(todayListData);
             }
 
-//            String query1 = "select * from toDoListTBL where date = '" + date + "';";
-//            Cursor cursor1 = sqLiteDatabase.rawQuery(query, null);
-//            while (cursor.moveToNext() == true) {
-//                SpaceData spaceData1 = new SpaceData(cursor.getBlob(0), cursor.getString(1),
-//                        cursor.getString(2), cursor.getString(3), cursor.getString(4),
-//                        cursor.getString(5), cursor.getString(6), cursor.getString(7),
-//                        cursor.getString(8), cursor.getString(9), cursor.getString(10),
-//                        cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
-//                arrayList.add(spaceData1);
-//            }
-
             //adapter 설정
-            listViewAdapter = new ListViewAdapter(mainActivity, true);
+            listViewAdapter = new ListViewAdapter_todayList(mainActivity, true);
             listViewAdapter.setArrayList(arrayList);
             f6ListView.setAdapter(listViewAdapter);
             listViewAdapter.notifyDataSetInvalidated();
@@ -176,7 +209,7 @@ public class FragmentTodayList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        listViewAdapter.notifyDataSetChanged();
+        listViewAdapter.notifyDataSetInvalidated();
     }
 
     //main 반납 생명주기 마지막

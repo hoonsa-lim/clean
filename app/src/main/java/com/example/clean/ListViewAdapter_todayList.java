@@ -2,36 +2,26 @@ package com.example.clean;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-import static androidx.annotation.Dimension.DP;
-
-public class ListViewAdapter extends BaseAdapter {
+public class ListViewAdapter_todayList extends BaseAdapter {
     private Context context;
-    private ArrayList<SpaceData> arrayList;
+    private ArrayList<TodayListData> arrayList;
     private boolean flag_visible_checkBox = false; // false 면 checkbox invisible
     private LinearLayout par_big_linear;
     private boolean flag;
 
-    public ListViewAdapter(Context context, boolean flag_visible_checkBox) {
+    public ListViewAdapter_todayList(Context context, boolean flag_visible_checkBox) {
         this.context = context;
         this.flag_visible_checkBox = flag_visible_checkBox;
     }
@@ -44,11 +34,11 @@ public class ListViewAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public ArrayList<SpaceData> getArrayList() {
+    public ArrayList<TodayListData> getArrayList() {
         return arrayList;
     }
 
-    public void setArrayList(ArrayList<SpaceData> arrayList) {
+    public void setArrayList(ArrayList<TodayListData> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -86,51 +76,21 @@ public class ListViewAdapter extends BaseAdapter {
         par_big_linear = view.findViewById(R.id.par_big_linear);
 
         //listview adapter 2번째 프래그 먼트에서 사용할 때와 1번째 프래그먼트에서 사용할 때를 구분함
-        final SpaceData spaceData = arrayList.get(i);
-        if (flag_visible_checkBox == false) {
+        final TodayListData todayListData = arrayList.get(i);
+        setValuesFunction(todayListData, par_toDoName, par_time, par_alarm, par_tvRepetition);
+        par_tvRepetition.setVisibility(View.GONE);
 
-            //첫번째 fragment : 체크박스 표시x
-            par_checkBox.setVisibility(View.INVISIBLE);
-            if (spaceData.getSpaceName() == "") {
-                par_toDoName.setText(new String(" + 할일 추가하기"));
-                par_toDoName.setTextSize(20);
-                par_toDoName.setPadding(20, 20, 20, 20);
-                par_toDoName.setGravity(Gravity.CENTER);
-                par_checkBox.setVisibility(View.GONE);
-                par_linear.setVisibility(View.GONE);
-                par_linear_checkBox.setVisibility(View.GONE);
-                par_linear_text.setGravity(Gravity.CENTER);
-                par_big_linear.setBackgroundColor(Color.WHITE);
-            } else {
-                setValuesFunction(spaceData, par_toDoName, par_time, par_alarm, par_tvRepetition);
-            }
-        }
         return view;
     }
 
-    private void setValuesFunction(SpaceData spaceData, TextView par_toDoName, TextView par_time, TextView par_alarm, TextView par_tvRepetition) {
+    private void setValuesFunction(TodayListData todayListData, TextView par_toDoName, TextView par_time, TextView par_alarm, TextView par_tvRepetition) {
         //값 적용
-        par_toDoName.setText(spaceData.getToDoName());
-        par_time.setText(spaceData.getTime());
-        if (spaceData.getAlarm() == 0) {
+        par_toDoName.setText(todayListData.getT_toDoName());
+        par_time.setText(todayListData.getT_time());
+        if (todayListData.getT_alarm() == 0) {
             par_alarm.setText("알람 x");
         } else {
             par_alarm.setText("알람 o");
-        }
-        String repetition = "";
-        String[] str = {spaceData.getMon(), spaceData.getTus(), spaceData.getWen(),
-                spaceData.getTur(), spaceData.getFri(), spaceData.getSat(), spaceData.getSun()};
-        int count = 0;
-        for (int k = 0; k < str.length; k++) {
-            if (!str[k].equals("null")) {
-                repetition = repetition + " " + str[k];
-                count++;
-            }
-        }
-        if (count == 7) {
-            par_tvRepetition.setText("매일");
-        } else {
-            par_tvRepetition.setText(repetition);
         }
     }
 }

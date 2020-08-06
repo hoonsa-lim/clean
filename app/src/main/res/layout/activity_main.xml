@@ -61,13 +61,6 @@
                             app:srcCompat="@drawable/backbutton" />
 
                         <ImageButton
-                            android:id="@+id/imageButtonkakao"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/kakao_account_logo" />
-
-                        <ImageButton
                             android:id="@+id/main_ib2"
                             android:layout_width="30dp"
                             android:layout_height="30dp"

@@ -72,7 +72,7 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.add_to_do_fragment, container, false);
-
+        getActivity().setTitle("할일 추가");
         //UI 찾기
         findViewByIdFunction(rootView);
 
@@ -165,9 +165,9 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                     String spaceName = spaceData.getSpaceName();
                     String toDoName = f1EtToDoName.getText().toString();
                     String date = f1TvDate.getText().toString();
+                    String time = f1TvTime.getText().toString();
 
                     //시간 00:00으로 자리수 맞추기
-                    String time = f1TvTime.getText().toString();
                     String[] array = time.split(":");
 
                     for (int i = 0; i < array.length; i++) {
@@ -176,6 +176,12 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                         }
                     }
                     time = array[0] + ":" + array[1];
+
+                    //알림
+                    int alarm = 0;
+                    if (f1SpinnerAlarm.getSelectedItem().toString().equals("알림")) {
+                        alarm = 1;
+                    }
 
                     //반복여부
                     String mon = null;
@@ -189,8 +195,11 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                     String repetition = null;
                     repetition = f1TvRepetition.getText().toString();
                     String[] array1 = repetition.split(":"); //"반복요일 : "를 버리기 위한
-                    String[] array2 = array1[1].trim().split(" ");//선택한 요일이 공백을 기준으로 구분됨
-                    if (array2.length > 0) {//구분된 요일이 1개라도 있다면
+                    Log.d("FragmentAddToDo_2", array1.length + "");
+
+                    String[] array2 = new String[7];
+                    if (array1.length > 1) { // null 이면 1값이 나옴,구분된 요일이 1개라도 있다면
+                        array2 = array1[1].trim().split(" ");//선택한 요일이 공백을 기준으로 구분됨
                         for (int i = 0; i < array2.length; i++) {//구분된 요일의 갯수보다 작을 때 반복
                             String[] week = {"월", "화", "수", "목", "금", "토", "일"};//선택한 요일과 비교하기 위한 배열
                             for (int j = 0; j < week.length; j++) {
@@ -199,36 +208,33 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                                 }
                             }
                         }
-                    }
-
-                    //알림
-                    int alarm = 0;
-                    if (f1SpinnerAlarm.getSelectedItem().toString().equals("알림")) {
-                        alarm = 1;
-                    }
-
-                    //쿼리문 실행
-                    if (image != null) {
-                        SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("insert into toDoListTBL " +
-                                "values(?, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
-                                + time + "',  '" + arrayWeek[0] + "',   '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "'," + alarm + ",0);");
-                        sqLiteStatement.bindBlob(1, image);
-                        sqLiteStatement.execute();
-
+                        //쿼리문 실행 : 반복 요일 선택한 값이 있는 것
+                        if (image != null) {
+                            SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("insert into toDoListTBL " +
+                                    "values(?, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                    + time + "',  '" + arrayWeek[0] + "',   '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "'," + alarm + ",0);");
+                            sqLiteStatement.bindBlob(1, image);
+                            sqLiteStatement.execute();
+                        } else {
+                            String query = "insert into toDoListTBL " +
+                                    "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                    + time + "',  '" + arrayWeek[0] + "',  '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "', " + alarm + ",0);";
+                            sqLiteDatabase.execSQL(query);
+                        }
                     } else {
+                        //반복요일이 없는 것, 반복 안함!
                         String query = "insert into toDoListTBL " +
                                 "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
-                                + time + "',  '" + arrayWeek[0] + "',  '" + arrayWeek[1] + "',  '" + arrayWeek[2] + "',  '" + arrayWeek[3] + "',  '" + arrayWeek[4] + "',  '" + arrayWeek[5] + "',  '" + arrayWeek[6] + "', " + alarm + ",0);";
+                                + time + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "', " + alarm + ",0);";
                         sqLiteDatabase.execSQL(query);
-
                     }
-
+                    Toast.makeText(addSpaceAndToDoActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
                     addSpaceAndToDoActivity.finish();
-                    fragmentFinishFunction();
                 } catch (NullPointerException e) {
                     Log.d("FragmentAddToDo", "저장 버튼 시 예외 발생 : " + e.getMessage());
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.d("FragmentAddToDo", "저장 버튼 시 예외 발생 : " + e.getMessage());
+                    Toast.makeText(addSpaceAndToDoActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -251,11 +257,15 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                         int month = (datePicker.getMonth() + 1);
                         if (month < 10) {
                             strMonth = "0" + month;
+                        }else{
+                            strMonth = String.valueOf(month);
                         }
                         String strDay = null;
                         int day = datePicker.getDayOfMonth();
                         if (day < 10) {
                             strDay = "0" + day;
+                        }else{
+                            strDay = String.valueOf(day);
                         }
 
                         f1TvDate.setText(datePicker.getYear() + "-" + strMonth + "-" + strDay);
@@ -339,7 +349,6 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                     dialogFunction(linearLayout, REPETITION_CHECKBOX);
                     f1Linear_repetition.setVisibility(View.VISIBLE);
                 }else{
-                    Toast.makeText(addSpaceAndToDoActivity,  "asdasdf", Toast.LENGTH_SHORT).show();
                     f1TvRepetition.setText("");
                     f1Linear_repetition.setVisibility(View.INVISIBLE);
                 }

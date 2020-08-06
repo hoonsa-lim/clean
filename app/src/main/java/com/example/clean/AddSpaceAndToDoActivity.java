@@ -53,7 +53,7 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_space);
-
+        setTitle("공간 추가");
         //UI 찾기
         findViewByIdFunction();
 

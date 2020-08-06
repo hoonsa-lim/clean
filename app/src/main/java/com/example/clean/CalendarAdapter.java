@@ -84,6 +84,7 @@ public class CalendarAdapter extends BaseAdapter {
         final com.example.clean.CalendarDAO item = items[position];
         Log.d("Table3", String.valueOf(position));
         int columnIndex = position % 7;
+
         //일요일은 빨강, 토요일은 파랑으로 색 변경
         if (columnIndex == 0)
             tvCalendarDay.setTextColor(Color.RED);
@@ -130,6 +131,7 @@ public class CalendarAdapter extends BaseAdapter {
             tvCalendarDay.setVisibility(View.INVISIBLE);
             ivListResult.setVisibility(View.INVISIBLE);
         } else {
+
 //            db = DBHelper.getInstance(mContext.getApplicationContext()).getWritableDatabase();
 //            //오늘 날의 성공한 리스트 갯수
 //            Cursor cursor = db.rawQuery("SELECT checkCount FROM cleaningTBL WHERE checkCount=" + 1 + " AND year=" + currentYear + " AND month=" + (currentMonth + 1) + " AND day=" + item.getDay() + ";", null);

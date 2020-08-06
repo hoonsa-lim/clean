@@ -51,9 +51,9 @@ public class FragmentCalender extends Fragment implements View.OnClickListener {
 
     //ui 찾기
     private void findViewByIdFunction(ViewGroup viewGroup) {
-        ibPrevious = viewGroup.findViewById(R.id.ibPrevious);
-        ibNext = viewGroup.findViewById(R.id.ibNext);
-        tvMonth = viewGroup.findViewById(R.id.tvMonth);
+        ibPrevious = viewGroup.findViewById(R.id.f6IbPrevious);
+        ibNext = viewGroup.findViewById(R.id.f6IbNext);
+        tvMonth = viewGroup.findViewById(R.id.f6TvDate);
         gvCalendar = viewGroup.findViewById(R.id.gvCalendar);
 
     }
@@ -73,12 +73,12 @@ public class FragmentCalender extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ibNext:
+            case R.id.f6IbNext:
                 calendarAdapter.setNextMonth();
                 setTvYearMonth();
                 calendarAdapter.notifyDataSetChanged();
                 break;
-            case R.id.ibPrevious:
+            case R.id.f6IbPrevious:
                 calendarAdapter.setPreviousMonth();
                 setTvYearMonth();
                 calendarAdapter.notifyDataSetChanged();
