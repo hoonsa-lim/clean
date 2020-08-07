@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".NickNameActivity">
+
+
+    <org.eazegraph.lib.charts.PieChart
+        android:id="@+id/f2tab1_chart_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        app:egBarWidth="20dp"
+        app:egEnableScroll="true"
+        app:egFixedBarWidth="true"
+        app:egLegendHeight="40dp"
+        app:egShowDecimal="true" />
+
+    <org.eazegraph.lib.charts.BarChart
+        android:id="@+id/f2tab1_chart_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        app:egBarWidth="20dp"
+        app:egEnableScroll="true"
+        app:egFixedBarWidth="true"
+        app:egLegendHeight="40dp"
+        app:egShowDecimal="true" />
+
+</LinearLayout>

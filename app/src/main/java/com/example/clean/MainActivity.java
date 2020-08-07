@@ -1,5 +1,7 @@
 package com.example.clean;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
@@ -7,12 +9,20 @@ import androidx.fragment.app.FragmentTabHost;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.Switch;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -33,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     //tab 관련
     public FragmentTabHost tabHost;
-    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree, tabSpecFour, tabSpecFive, tabSpecSix, tabSpecSeven;
+    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree, tabSpecFour, tabSpecFive, tabSpecSix, tabSpecSeven,tabSpecEight,tabSpecNine,tabSpecTen,tabSpecEleven;
     private ImageView imageView1, imageView2, imageView3;
     public LinearLayout main_widget_linear;
     public ImageButton main_ib1;
@@ -62,11 +72,20 @@ public class MainActivity extends AppCompatActivity {
     private String dayOfWeek1;
     private ArrayList<SpaceData> arrayList;
 
+    //디비
+    private MyDBHelper myDBHelper = null;
+    private SQLiteDatabase sqLiteDatabase;
+
+    //메뉴
+    private MenuItem mSearch;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setTitleColor(Color.parseColor("#061F5C"));
         //ui 찾기
         findViewByIdFunction();
 
@@ -111,6 +130,115 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //메뉴
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.option_menu, menu);
+        mSearch = menu.findItem(R.id.menuSearch);
+
+        SearchView menuSearch = (SearchView)mSearch.getActionView();
+        menuSearch.setSubmitButtonEnabled(true);
+        menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menuProfile:
+                tabHost.setCurrentTab(7);
+                break;
+            case R.id.menuStatistics:
+                tabHost.setCurrentTab(8);
+                break;
+            case R.id.menuSwitch:
+                View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_menu1, null);
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setView(dialogView);
+                dialogView.setBackgroundColor(Color.parseColor("#A879FC"));
+
+                Switch switch1 = dialogView.findViewById(R.id.switch1);
+                Button d1btnExit = dialogView.findViewById(R.id.d1btnExit);
+
+                d1btnExit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                dialog.show();
+                break;
+            case R.id.menuProfileAdd:
+                tabHost.setCurrentTab(9);
+                break;
+            case R.id.menuProfileEdit:
+                tabHost.setCurrentTab(10);
+                break;
+            case R.id.menuProfileDel:
+                View dialogView2 = View.inflate(getApplicationContext(), R.layout.dialog_menu2, null);
+
+                AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainActivity.this);
+                dialog2.setView(dialogView2);
+                dialogView2.setBackgroundColor(Color.parseColor("#A879FC"));
+
+                final EditText d2edtNickName = dialogView2.findViewById(R.id.d2edtNickName);
+                Button d2btnDelete = dialogView2.findViewById(R.id.d2btnDelete);
+                Button d2btnExit = dialogView2.findViewById(R.id.d2btnExit);
+
+                d2btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sqLiteDatabase = myDBHelper.getWritableDatabase();
+                        if (d2edtNickName.getText().toString().equals("")) {
+                            Toast.makeText(getApplicationContext(), "닉네임을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            sqLiteDatabase.execSQL("DELETE FROM myTBL WHERE nickname = '"
+                                    + d2edtNickName.getText().toString() + "';");
+                            Toast.makeText(getApplicationContext(), "프로필이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        sqLiteDatabase.close();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                d2btnExit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                dialog2.show();
+                break;
+            case R.id.menuAppInfo:
+                Intent intent = new Intent(getApplicationContext(), AppInfomationActivity.class);
+                startActivity(intent);
+                break;
+            default: break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     //today 정보 받아서 db에 저장
     private void getToDayInformation() {
@@ -161,8 +289,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //쿼리문
-        MyDBHelper myDBHelper = null;
-        SQLiteDatabase sqLiteDatabase;
+
         Cursor cursor;
         //오늘 날짜중 clear가 0인 값
         try {
@@ -270,6 +397,10 @@ public class MainActivity extends AppCompatActivity {
         tabSpecFive = tabHost.newTabSpec("FIVE").setIndicator("5");
         tabSpecSix = tabHost.newTabSpec("SIX").setIndicator("6");
         tabSpecSeven = tabHost.newTabSpec("SEVEN").setIndicator("7");
+        tabSpecEight = tabHost.newTabSpec("EIGHT").setIndicator("8");
+        tabSpecNine= tabHost.newTabSpec("NINE").setIndicator("9");
+        tabSpecTen = tabHost.newTabSpec("TEN").setIndicator("10");
+        tabSpecEleven = tabHost.newTabSpec("ELEVEN").setIndicator("11");
 
         //tab spec을 tabhost에 저장함
         tabHost.addTab(tabSpecOne, fragmentSpaceList.getClass(), null);
@@ -279,6 +410,10 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabSpecFive, fragmentTodoList.getClass(), null);
         tabHost.addTab(tabSpecSix, fragmentAddToDo_2.getClass(), null);
         tabHost.addTab(tabSpecSeven, fragmentAddToDo_3.getClass(), null);
+        tabHost.addTab(tabSpecEight, FragmentMyProfile.class, null);
+        tabHost.addTab(tabSpecNine, FragmentChart.class, null);
+        tabHost.addTab(tabSpecTen, FragmentProfileAdd.class, null);
+        tabHost.addTab(tabSpecEleven, FragmentProfileEdit.class, null);
         //시작 화면을 0번째 tab으로 설정함
 
         //view 메모리 로드를 위한

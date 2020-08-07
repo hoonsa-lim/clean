@@ -156,7 +156,7 @@ public class CalendarAdapter extends BaseAdapter {
                         break;
                 }
                 String dayStr = null;
-                switch ((currentMonth + 1)) {
+                switch (item.getDay()) {
                     case 1:
                     case 2:
                     case 3:
@@ -195,13 +195,13 @@ public class CalendarAdapter extends BaseAdapter {
                     //성공 갯수가 리스트 전체 갯수와 같다.
                     if (clear_count == total_count) {
                         ivListResult.setVisibility(View.VISIBLE);
-                        ivListResult.setImageResource(R.drawable.success_32);
+                        ivListResult.setImageResource(R.drawable.like);
                         ivListResult.setAlpha(100);
                         markCheck[position] = 1;
                         //성공 갯수가 리스트 전체 갯수와 같다.
                     } else {
                         ivListResult.setVisibility(View.VISIBLE);
-                        ivListResult.setImageResource(R.drawable.fail_32);
+                        ivListResult.setImageResource(R.drawable.thumbs_down);
                         ivListResult.setAlpha(100);
                         markCheck[position] = 2;
                     }

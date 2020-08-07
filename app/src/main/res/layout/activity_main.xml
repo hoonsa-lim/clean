@@ -55,25 +55,33 @@
 
                         <ImageButton
                             android:id="@+id/main_ib1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/backbutton" />
+                            android:background="@drawable/ripple_effect"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/big_add" />
 
                         <ImageButton
                             android:id="@+id/main_ib2"
                             android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:padding="5dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@mipmap/plus" />
+                            app:srcCompat="@drawable/list" />
 
                         <ImageButton
                             android:id="@+id/main_ib3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/previous" />
+                            android:background="@drawable/ripple_effect"
+                            android:padding="5dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/calender" />
                     </LinearLayout>
 
                 </LinearLayout>

@@ -10,12 +10,12 @@
         app:showAsAction="always|collapseActionView" />
     <item
         android:id="@+id/menuProfile"
-        android:icon="@drawable/user"
+        android:icon="@drawable/profile"
         android:title="내 프로필"
         app:showAsAction="always" />
     <item
         android:id="@+id/menuStatistics"
-        android:icon="@drawable/piegraph"
+        android:icon="@drawable/chart"
         android:title="통계"
         app:showAsAction="always" />
     <item
