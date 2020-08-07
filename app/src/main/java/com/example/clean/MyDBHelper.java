@@ -19,7 +19,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     //테이블을 생성한다.
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table myTBL(nickname char(20) primary key, picture char(50), name char(20), gender" +
+        sqLiteDatabase.execSQL("create table myTBL(nickname char(20) primary key, picture blob, name char(20), gender" +
                 " char(20), age char(20));");
         sqLiteDatabase.execSQL("create table toDoListTBL(image BLOB, spaceName char, toDoName char, date char, time char," +
                 " mon char, tus char, wen char, tur char, fri char, sat char, sun char, alarm integer, clear integer);");
@@ -30,7 +30,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     //테이블을 삭제한다.
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("drop table if exists myTBL;");
+        sqLiteDatabase.execSQL("drop table if exists myTBL");
         sqLiteDatabase.execSQL("drop table if exists toDoListTBL;");
         sqLiteDatabase.execSQL("drop table if exists toDayListTBL;");
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuSearch"
+        android:icon="@drawable/search"
+        android:title="Search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/menuProfile"
+        android:icon="@drawable/user"
+        android:title="내 프로필"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menuStatistics"
+        android:icon="@drawable/piegraph"
+        android:title="통계"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menuSwitch"
+        android:title="도움말 보기" />
+    <item
+        android:id="@+id/menuProfileAdd"
+        android:title="프로필 정보 추가" />
+    <item
+        android:id="@+id/menuProfileEdit"
+        android:title="프로필 정보 수정" />
+    <item
+        android:id="@+id/menuProfileDel"
+        android:title="프로필 정보 삭제" />
+    <item
+        android:id="@+id/menuAppInfo"
+        android:title="앱 정보" />
+</menu>

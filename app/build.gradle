@@ -34,4 +34,6 @@ dependencies {
 
     // 카카오링크
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.30.0'
+    implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
 }
