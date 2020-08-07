@@ -44,7 +44,6 @@ public class FragmentCalender extends Fragment implements View.OnClickListener {
         ibPrevious.setOnClickListener(this);
         ibNext.setOnClickListener(this);
 
-
         return viewGroup;
     }
 

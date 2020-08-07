@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.clean.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.jar.Attributes;
 
@@ -35,6 +36,10 @@ public class CalendarAdapter extends BaseAdapter {
     public int lastDay;
     public int selectedPosition = -1;
     Integer[] markCheck = new Integer[49];
+
+    ArrayList<TodayListData> clear_todayListDataArrayList = new ArrayList<TodayListData>();
+    ArrayList<TodayListData> total_todayListDataArrayList = new ArrayList<TodayListData>();
+
 
     public CalendarAdapter(Context mContext) {
         this.mContext = mContext;
@@ -75,120 +80,170 @@ public class CalendarAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            view = layoutInflater.inflate(layout, viewGroup, false);
-        }
-        TextView tvCalendarDay = view.findViewById(R.id.tvCalendarDay);
-        ImageView ivListResult = view.findViewById(R.id.ivListResult);
-
-        final com.example.clean.CalendarDAO item = items[position];
-        Log.d("Table3", String.valueOf(position));
-        int columnIndex = position % 7;
-
-        //일요일은 빨강, 토요일은 파랑으로 색 변경
-        if (columnIndex == 0)
-            tvCalendarDay.setTextColor(Color.RED);
-        else if (columnIndex == 6)
-            tvCalendarDay.setTextColor(Color.BLUE);
-        else
-            tvCalendarDay.setTextColor(Color.BLACK);
-
-        //달력에 요일 표시 및 날짜 표시-DB연결 X.
-        if (item.getDay() < 0) {
-            ivListResult.setVisibility(View.INVISIBLE);
-            switch (item.getDay()) {
-                case -1:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("일");
-                    break;
-                case -2:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("월");
-                    break;
-                case -3:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("화");
-                    break;
-                case -4:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("수");
-                    break;
-                case -5:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("목");
-                    break;
-                case -6:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("금");
-                    break;
-                case -7:
-                    tvCalendarDay.setVisibility(View.VISIBLE);
-                    tvCalendarDay.setText("토");
-                    break;
-
+        try {
+            if (view == null) {
+                view = layoutInflater.inflate(layout, viewGroup, false);
             }
-        } else if (item.getDay() == 0) {
-            tvCalendarDay.setVisibility(View.INVISIBLE);
-            ivListResult.setVisibility(View.INVISIBLE);
-        } else {
+            TextView tvCalendarDay = view.findViewById(R.id.tvCalendarDay);
+            ImageView ivListResult = view.findViewById(R.id.ivListResult);
 
-//            db = DBHelper.getInstance(mContext.getApplicationContext()).getWritableDatabase();
-//            //오늘 날의 성공한 리스트 갯수
-//            Cursor cursor = db.rawQuery("SELECT checkCount FROM cleaningTBL WHERE checkCount=" + 1 + " AND year=" + currentYear + " AND month=" + (currentMonth + 1) + " AND day=" + item.getDay() + ";", null);
-//            //오늘의 리스트 총 갯수
-//            Cursor cursor1 = db.rawQuery("SELECT checkCount FROM cleaningTBL WHERE year=" + currentYear + " AND month=" + (currentMonth + 1) + " AND day=" + item.getDay() + ";", null);
-//            int size1 = cursor.getCount();
-//            int size2 = cursor1.getCount();
-//
-            tvCalendarDay.setVisibility(View.VISIBLE);
-            tvCalendarDay.setText(String.valueOf(item.getDay()));
-//            //리스트가 있으면
-//            if (size2 != 0) {
-//                //성공 갯수가 리스트 전체 갯수와 같다.
-//                if (size1 == size2) {
-//                    ivListResult.setVisibility(View.VISIBLE);
-//                    ivListResult.setImageResource(R.drawable.backbutton);
-//                    ivListResult.setAlpha(100);
-//                    markCheck[position] =1;
-//                    //성공 갯수가 리스트 전체 갯수와 같다.
-//                } else {
-//                    ivListResult.setVisibility(View.VISIBLE);
-//                    ivListResult.setImageResource(R.drawable.ic_launcher_background);
-//                    ivListResult.setAlpha(100);
-//                    markCheck[position] =2;
-//                }
-//                //리스트가 아예 없을 때
-//            } else if (size2 == 0) {
-//                ivListResult.setVisibility(View.INVISIBLE);
-//                markCheck[position] =0;
-//
-//            }
-            Log.d("MarkCheck",String.valueOf(markCheck));
-            //오늘 day 텍스트 컬러 변경
-            if ((Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == item.getDay())&&(Calendar.getInstance().get(Calendar.MONTH) == currentMonth)
-                    &&(Calendar.getInstance().get(Calendar.YEAR) == currentYear)) {
-                tvCalendarDay.setTextColor(Color.GREEN);
-            }
-            //날짜 클릭했을 때 이벤트
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (0){                     //markCheck[position]
-                        case 0: toastDisplay("자료가 없습니다."); break;
-                        case 1: toastDisplay("청소를 완료한 날!"); break;
-                        case 2: toastDisplay("청소를 다 하지 못한 날..."); break;
-                    }
+            final CalendarDAO item = items[position];
+            Log.d("Table3", String.valueOf(position));
+            int columnIndex = position % 7;
+
+            //일요일은 빨강, 토요일은 파랑으로 색 변경
+            if (columnIndex == 0)
+                tvCalendarDay.setTextColor(Color.RED);
+            else if (columnIndex == 6)
+                tvCalendarDay.setTextColor(Color.BLUE);
+            else
+                tvCalendarDay.setTextColor(Color.BLACK);
+
+            //달력에 요일 표시 및 날짜 표시-DB연결 X.
+            if (item.getDay() < 0) {
+                ivListResult.setVisibility(View.INVISIBLE);
+                switch (item.getDay()) {
+                    case -1:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("일");
+                        break;
+                    case -2:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("월");
+                        break;
+                    case -3:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("화");
+                        break;
+                    case -4:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("수");
+                        break;
+                    case -5:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("목");
+                        break;
+                    case -6:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("금");
+                        break;
+                    case -7:
+                        tvCalendarDay.setVisibility(View.VISIBLE);
+                        tvCalendarDay.setText("토");
+                        break;
+
                 }
-            });
-//            cursor.close();
-//            cursor1.close();
-        }
+            } else if (item.getDay() == 0) {
+                tvCalendarDay.setVisibility(View.INVISIBLE);
+                ivListResult.setVisibility(View.INVISIBLE);
+            } else {
+                db = new MyDBHelper(mContext, "cleanDB").getReadableDatabase();
+                String monthStr = null;
+                switch ((currentMonth + 1)) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        monthStr = "0" + (currentMonth + 1);
+                        break;
+                    default:
+                        monthStr = String.valueOf(currentMonth + 1);
+                        break;
+                }
+                String dayStr = null;
+                switch ((currentMonth + 1)) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        dayStr = "0" + item.getDay();
+                        break;
+                    default:
+                        dayStr = String.valueOf(item.getDay());
+                        break;
+                }
+                String today = currentYear + "-" + monthStr + "-" + dayStr;
+                Log.d("CalendarAdapter", today);
 
+                //성공한 개수 : 날짜별
+                String query = "SELECT t_clear FROM todayListTBL WHERE t_clear = 1 and t_today = '" + today + "';";
+                Cursor cursor = db.rawQuery(query, null);
+
+                //날짜별 총 개수
+                String query1 = "SELECT t_clear FROM todayListTBL WHERE t_today = '" + today + "';";
+                Cursor cursor1 = db.rawQuery(query1, null);
+
+
+                int clear_count = cursor.getCount();
+                int total_count = cursor1.getCount();
+
+                tvCalendarDay.setVisibility(View.VISIBLE);
+                tvCalendarDay.setText(String.valueOf(item.getDay()));
+
+                //리스트가 있으면
+                if (total_count != 0) {
+                    //성공 갯수가 리스트 전체 갯수와 같다.
+                    if (clear_count == total_count) {
+                        ivListResult.setVisibility(View.VISIBLE);
+                        ivListResult.setImageResource(R.drawable.success_32);
+                        ivListResult.setAlpha(100);
+                        markCheck[position] = 1;
+                        //성공 갯수가 리스트 전체 갯수와 같다.
+                    } else {
+                        ivListResult.setVisibility(View.VISIBLE);
+                        ivListResult.setImageResource(R.drawable.fail_32);
+                        ivListResult.setAlpha(100);
+                        markCheck[position] = 2;
+                    }
+                    //리스트가 아예 없을 때
+                } else if (total_count == 0) {
+                    ivListResult.setVisibility(View.INVISIBLE);
+                    markCheck[position] = 0;
+
+                }
+                Log.d("MarkCheck", String.valueOf(markCheck));
+                //오늘 day 텍스트 컬러 변경
+                if ((Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == item.getDay()) && (Calendar.getInstance().get(Calendar.MONTH) == currentMonth)
+                        && (Calendar.getInstance().get(Calendar.YEAR) == currentYear)) {
+                    tvCalendarDay.setTextColor(Color.GREEN);
+                }
+                //날짜 클릭했을 때 이벤트
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (markCheck[position]) {
+                            case 0:
+                                toastDisplay("자료가 없습니다.");
+                                break;
+                            case 1:
+                                toastDisplay("청소를 완료한 날!");
+                                break;
+                            case 2:
+                                toastDisplay("청소를 다 하지 못한 날...");
+                                break;
+                        }
+                    }
+                });
+                cursor.close();
+            }
+        }catch (Exception e){
+            Log.d("CalendarAdapter", "예외 발생");
+        }
         return view;
     }
 
     private void toastDisplay(String s) {
-        Toast.makeText(mContext,s,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
     }
 
     //요일에 따른 달력 시작 확인

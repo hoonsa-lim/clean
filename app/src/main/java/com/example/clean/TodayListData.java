@@ -15,6 +15,11 @@ public class TodayListData implements Parcelable {
     private int t_clear;          //달성 여부
     private byte[] t_clearImage;  //달성 인증 사진
 
+    public TodayListData(String t_today, int t_clear) {
+        this.t_today = t_today;
+        this.t_clear = t_clear;
+    }
+
     public TodayListData(String pk_fullName, String t_today, String t_spaceName, String t_toDoName, String t_date, String t_week, String t_time, int t_alarm, int t_clear, byte[] t_clearImage) {
         this.pk_fullName = pk_fullName;
         this.t_today = t_today;
