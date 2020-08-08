@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.clean">
-<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,20 +21,26 @@
         </activity>
         <activity android:name=".AddSpaceAndToDoActivity"></activity>
         <activity android:name=".AppInfomationActivity"></activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".KakaoTest">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="kakaolink"
                     android:scheme="5af85f5957afe27d852c81905b57dbcf" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="5af85f5957afe27d852c81905b57dbcf" />
+        <receiver android:name=".AlarmReceiver" />
+        <service
+            android:name=".RingtonePlayingService"
+            android:enabled="true"></service>
     </application>
 </manifest>

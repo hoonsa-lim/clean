@@ -88,7 +88,8 @@ public class ListViewAdapter_todayList extends BaseAdapter {
 
         //취소선
         if(todayListData.getT_clear() != 0){
-            par_big_linear.setAlpha(0.5f);
+            par_big_linear.setAlpha(0.3f);
+            par_big_linear.setBackgroundColor(Color.GRAY);
             par_toDoName.setPaintFlags(par_toDoName.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
             par_time.setPaintFlags(par_time.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
             par_alarm.setPaintFlags(par_alarm.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);

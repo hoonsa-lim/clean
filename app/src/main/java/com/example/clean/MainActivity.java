@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -78,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     //메뉴
     private MenuItem mSearch;
+
+    //알림
+    private AlarmManager alarm_manager;
+    private PendingIntent pendingIntent;
 
 
     @Override
@@ -371,5 +379,11 @@ public class MainActivity extends AppCompatActivity {
         }
         first_time = System.currentTimeMillis();
     }
+
+
+
+
+
+
 
 }

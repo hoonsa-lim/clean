@@ -46,7 +46,6 @@ public class FragmentTodayList extends Fragment {
     public ListViewAdapter_todayList listViewAdapter;
     private ListView f6ListView;
     private TextView f6TvDate;
-    private ImageButton f6IbNonClear, f6IbClear;
     private FrameLayout linearLayout_getview;
 
     //날짜
@@ -132,7 +131,6 @@ public class FragmentTodayList extends Fragment {
                 EditText e2 = v.findViewById(R.id.dial_editText2);
                 e1.setText(arrayList.get(position).getT_spaceName());
                 e2.setText(arrayList.get(position).getT_toDoName());
-
 
                 alert.setView(v);
                 alert.show();
