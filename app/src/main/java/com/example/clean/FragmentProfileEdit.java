@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +81,7 @@ public class FragmentProfileEdit extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.profile_edit_fragment, container, false);
+        main3Activity.setTitle("프로필 정보 수정");
 
         spinner2 = viewGroup.findViewById(R.id.f4spinner);
         f4ImageView = viewGroup.findViewById(R.id.f4ImageView);
@@ -118,6 +123,8 @@ public class FragmentProfileEdit extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 selectedPicture = arrayList.get(position);
 
+                Log.d("problem", selectedPicture);
+
                 sqLiteDatabase = myDBHelper.getReadableDatabase();
                 Cursor cursor;
                 cursor = sqLiteDatabase.rawQuery("SELECT picture, name, gender, age FROM myTBL where nickname = '"+ selectedPicture +"';", null);
@@ -131,12 +138,14 @@ public class FragmentProfileEdit extends Fragment {
                 cursor.close();
                 sqLiteDatabase.close();
 
-
                 Bitmap imageBitmap = null;
                 if (strPicture != null) {
                     imageBitmap = BitmapFactory.decodeByteArray(strPicture, 0, strPicture.length);
                     f4ImageView.setImageBitmap(imageBitmap);
                 }
+
+                imgbytes = strPicture;
+
                 f4edtName.setText(strName);
                 switch (strGender){
                     case "남성":
@@ -174,6 +183,7 @@ public class FragmentProfileEdit extends Fragment {
                 if (f4edtName.getText().toString() != "") {
                     SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("UPDATE myTBL SET picture = ? , name = '"+f4edtName.getText().toString()+"' , gender = '"+ gender +"' , " +
                             "age = '"+ f4edtAge.getText().toString() +"' WHERE nickname = '"+ selectedPicture +"';");
+
                     sqLiteStatement.bindBlob(1, imgbytes);
                     sqLiteStatement.execute();
                 }
@@ -181,6 +191,16 @@ public class FragmentProfileEdit extends Fragment {
                 Toast.makeText(main3Activity, "프로필이 수정되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        f4btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main3Activity.CurrentTabFuntion(0);
+            }
+        });
+
+        f4ImageView.setBackground(new ShapeDrawable(new OvalShape()));
+        f4ImageView.setClipToOutline(true);
 
 
         return viewGroup;
@@ -213,10 +233,10 @@ public class FragmentProfileEdit extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, 50, byteArray);
             imgbytes = byteArray.toByteArray();
-
         }
     }
 }

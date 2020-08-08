@@ -44,7 +44,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-
     //tab 관련
     public FragmentTabHost tabHost;
     private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree, tabSpecFour, tabSpecFive, tabSpecSix, tabSpecSeven, tabSpecEight, tabSpecNine, tabSpecTen, tabSpecEleven;
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitleColor(Color.parseColor("#061F5C"));
+
         //ui 찾기
         findViewByIdFunction();
 
@@ -126,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
                 selectedLastTab = s;
             }
         });
+
+        CurrentTabFuntion(0);
+    }
+
+    public void CurrentTabFuntion(int i) {
+        tabHost.setCurrentTab(i);
     }
 
     //메뉴
@@ -141,13 +146,11 @@ public class MainActivity extends AppCompatActivity {
         menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -167,9 +170,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menuSwitch:
                 View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_menu1, null);
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
                 dialog.setView(dialogView);
-                dialogView.setBackgroundColor(Color.parseColor("#A879FC"));
 
                 Switch switch1 = dialogView.findViewById(R.id.switch1);
                 Button d1btnExit = dialogView.findViewById(R.id.d1btnExit);
@@ -193,9 +195,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menuProfileDel:
                 View dialogView2 = View.inflate(getApplicationContext(), R.layout.dialog_menu2, null);
 
-                AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
                 dialog2.setView(dialogView2);
-                dialogView2.setBackgroundColor(Color.parseColor("#A879FC"));
 
                 final EditText d2edtNickName = dialogView2.findViewById(R.id.d2edtNickName);
                 Button d2btnDelete = dialogView2.findViewById(R.id.d2btnDelete);

@@ -111,16 +111,16 @@
         android:id="@+id/textView15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:text="Icon made by Freepik from www.flaticon.com" />
 
     <Button
         android:id="@+id/a4btnExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#A879FC"
+        android:background="@drawable/border_stroke3"
         android:text="나가기"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
 </LinearLayout>

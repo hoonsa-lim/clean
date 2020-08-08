@@ -38,6 +38,7 @@ public class FragmentChart extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.chart_fragment, container, false);
+        main3Activity.setTitle("통계");
 
         chart1 = viewGroup.findViewById(R.id.f2tab1_chart_1);
         chart2 = viewGroup.findViewById(R.id.f2tab1_chart_2);
