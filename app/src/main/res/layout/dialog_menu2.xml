@@ -12,6 +12,7 @@
         android:layout_weight="1"
         android:gravity="center|left"
         android:text="프로필 정보를 삭제하시겠습니까?"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <EditText
@@ -21,7 +22,10 @@
         android:ems="10"
         android:gravity="center"
         android:hint="삭제하실 닉네임을 입력해주세요."
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColorHint="#008F81"
+        android:backgroundTint = "@color/white"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,7 +37,7 @@
             android:id="@+id/d2btnExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#A879FC"
+            android:background="#071f5d"
             android:text="나가기"
             android:textColor="@android:color/white" />
 
@@ -41,7 +45,7 @@
             android:id="@+id/d2btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#A879FC"
+            android:background="#071f5d"
             android:text="삭제"
             android:textColor="@android:color/white" />
     </LinearLayout>

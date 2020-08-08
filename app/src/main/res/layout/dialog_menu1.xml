@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:background="#A879FC"
+        android:background="#071f5d"
         android:text="나가기"
         android:textColor="@android:color/white" />
 

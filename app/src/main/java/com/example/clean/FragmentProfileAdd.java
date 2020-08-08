@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -63,6 +67,7 @@ public class FragmentProfileAdd extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.profile_add_fragment, container, false);
+        main3Activity.setTitle("프로필 정보 추가");
 
         myDBHelper = new MyDBHelper(main3Activity,"cleanDB");
 
@@ -105,25 +110,32 @@ public class FragmentProfileAdd extends Fragment {
         f3btnProfileAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sqLiteDatabase = myDBHelper.getWritableDatabase();
-                SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("INSERT INTO myTBL VALUES ('" + f3edtNickName.getText().toString() + "' , " +
-                        "? , '" + f3edtName.getText().toString() + "' , " +
-                        "'" + gender + "' , '" + f3edtAge.getText().toString() + "');");
-                sqLiteStatement.bindBlob(1, imgbytes);
-                sqLiteStatement.execute();
+                if(imgbytes != null) {
+                    sqLiteDatabase = myDBHelper.getWritableDatabase();
+                    SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement("INSERT INTO myTBL VALUES ('" + f3edtNickName.getText().toString() + "' , " +
+                            "? , '" + f3edtName.getText().toString() + "' , " +
+                            "'" + gender + "' , '" + f3edtAge.getText().toString() + "');");
+                    sqLiteStatement.bindBlob(1, imgbytes);
+                    sqLiteStatement.execute();
 
-                sqLiteDatabase.close();
+                    sqLiteDatabase.close();
 
-                Toast.makeText(main3Activity, "프로필이 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(main3Activity, "프로필이 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(main3Activity, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         f3btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                main3Activity.CurrentTabFuntion(0);
             }
         });
+
+        f3ImageView.setBackground(new ShapeDrawable(new OvalShape()));
+        f3ImageView.setClipToOutline(true);
 
         return viewGroup;
     }

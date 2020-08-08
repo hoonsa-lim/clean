@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,6 +114,9 @@ public class FragmentMyProfile extends Fragment {
                 Toast.makeText(main3Activity, "닉네임을 선택해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        f1ImageView.setBackground(new ShapeDrawable(new OvalShape()));
+        f1ImageView.setClipToOutline(true);
 
         return viewGroup;
     }
