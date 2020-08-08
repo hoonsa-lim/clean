@@ -22,7 +22,7 @@
             android:layout_marginBottom="5dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@drawable/kakao_default_profile_image" />
 
         <Button
             android:id="@+id/f3btnImageView"
