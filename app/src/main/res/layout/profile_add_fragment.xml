@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="닉 네 임"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/f3edtNickName"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="35dp"
         android:text="프로필 사진 설정"
-        android:textSize="15sp" />
+        android:textSize="14sp" />
 
     <View
         android:id="@+id/divider"
@@ -82,7 +82,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="이     름"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/f3edtName"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <View
@@ -115,7 +115,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="성     별"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <RadioGroup
             android:id="@+id/f3rgGender"
@@ -165,7 +165,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="나     이"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/f3edtAge"
@@ -173,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -187,7 +187,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="프로필 추가"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.061"
@@ -200,7 +200,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="다음에 추가"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.943"

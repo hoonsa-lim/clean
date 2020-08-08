@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     //tab 관련
     public FragmentTabHost tabHost;
-    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree, tabSpecFour, tabSpecFive, tabSpecSix, tabSpecSeven,tabSpecEight,tabSpecNine,tabSpecTen,tabSpecEleven;
+    private TabHost.TabSpec tabSpecOne, tabSpecTwo, tabSpecThree, tabSpecFour, tabSpecFive, tabSpecSix, tabSpecSeven, tabSpecEight, tabSpecNine, tabSpecTen, tabSpecEleven;
     private ImageView imageView1, imageView2, imageView3;
     public LinearLayout main_widget_linear;
     public ImageButton main_ib1;
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem mSearch;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,18 +88,8 @@ public class MainActivity extends AppCompatActivity {
         //ui 찾기
         findViewByIdFunction();
 
-        //오늘할일 및 달력을 위한 table을 위해 db에 값 넣기
-        getToDayInformation();
-
         //tab setting
         setTabFunction();
-//        imageButtonkakao.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), KakaoTest.class);
-//                startActivity(intent);
-//            }
-//        });
 
         //이미지 버튼 이벤트 fragment 변경 이벤트
         main_ib1.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.option_menu, menu);
         mSearch = menu.findItem(R.id.menuSearch);
 
-        SearchView menuSearch = (SearchView)mSearch.getActionView();
+        SearchView menuSearch = (SearchView) mSearch.getActionView();
         menuSearch.setSubmitButtonEnabled(true);
         menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -157,9 +146,10 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menuProfile:
                 tabHost.setCurrentTab(7);
                 break;
@@ -234,132 +224,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AppInfomationActivity.class);
                 startActivity(intent);
                 break;
-            default: break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    //today 정보 받아서 db에 저장
-    private void getToDayInformation() {
-        String query2 = null;
 
-        //시스템 날짜 받기
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
-        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
-        toDayDate = simpleDate.format(mDate).trim();
-        Log.d("MainActivity", toDayDate);
-
-        //요일받기
-        Calendar calendar = Calendar.getInstance();
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        dayOfWeek1 = "";
-        switch (dayOfWeek) {
-            case 1:
-                dayOfWeek1 = "일";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where sun = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 2:
-                dayOfWeek1 = "월";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where mon = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 3:
-                dayOfWeek1 = "화";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where tus = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 4:
-                dayOfWeek1 = "수";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where wen = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 5:
-                dayOfWeek1 = "목";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where tur = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 6:
-                dayOfWeek1 = "금";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where fri = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            case 7:
-                dayOfWeek1 = "토";
-                query2 = "SELECT * FROM (SELECT * FROM toDoListTBL WHERE date < '"+ toDayDate + "') where sat = '"+ dayOfWeek1 +"' and clear = 0;";
-                break;
-            default:
-                break;
-        }
-
-        //쿼리문
-
-        Cursor cursor;
-        //오늘 날짜중 clear가 0인 값
-        try {
-            myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
-            sqLiteDatabase = myDBHelper.getWritableDatabase();
-//            myDBHelper.onUpgrade(sqLiteDatabase, 0 , 1);
-            String query = "select * from toDoListTBL where date = '" + toDayDate + "' and clear = 0";
-            cursor = sqLiteDatabase.rawQuery(query, null);
-
-            //toDayListTBL에 먼저 저장, 나중에 저장 되는 값은 중복되지 않도록 하기 위함
-            while (cursor.moveToNext() == true) {
-                String str0 = cursor.getString(1) + cursor.getString(2) + cursor.getString(3) + cursor.getString(4);
-                String str1 = cursor.getString(1);
-                String str2 = cursor.getString(2);
-                String str3 = cursor.getString(3);
-                String str4 = cursor.getString(4);
-                int str12 = cursor.getInt(12);
-                int str13 = cursor.getInt(13);
-
-                String query1 = "insert or ignore into toDayListTBL values( " +
-                        " '"+ str0 +"',  " +
-                        " '"+ toDayDate +"',  " +
-                        " '"+ str1 +"',  " +
-                        " '"+ str2 +"',  " +
-                        " '"+ str3 +"',  " +
-                        " '"+ dayOfWeek1 +"',  " +
-                        " '"+ str4 +"',  " +
-                        " " + str12 + ",  " +
-                        " " + str13 + ",  " +
-                        " "+ null +"); ";
-                sqLiteDatabase.execSQL(query1);
-            }
-        } catch (Exception e) {
-            Log.d("MainActivity", "Exception 발생 : 시작 날짜가 오늘인 data 중 clear가 0인 값" + e.getMessage());
-        }
-
-        //오늘날짜 요일을 기준으로, clear가 0이고, 오늘날짜보다 시작날짜가 이른, 값을 로드 후 toDayListTBL에 insert
-        try {
-            sqLiteDatabase = myDBHelper.getWritableDatabase();
-            cursor = sqLiteDatabase.rawQuery(query2, null);
-            cursor.moveToFirst();
-            while (cursor.moveToNext() == true) {
-                String str0 = cursor.getString(1) + cursor.getString(2) + cursor.getString(3) + cursor.getString(4);
-                String str1 = cursor.getString(1);
-                String str2 = cursor.getString(2);
-                String str3 = cursor.getString(3);
-                String str4 = cursor.getString(4);
-                int str12 = cursor.getInt(12);
-                int str13 = cursor.getInt(13);
-
-                String query1 = "insert or ignore into toDayListTBL values( " +
-                        " '"+ str0 +"',  " +
-                        " '"+ toDayDate +"',  " +
-                        " '"+ str1 +"',  " +
-                        " '"+ str2 +"',  " +
-                        " '"+ str3 +"',  " +
-                        " '"+ dayOfWeek1 +"',  " +
-                        " '"+ str4 +"',  " +
-                        " " + str12 + ",  " +
-                        " " + str13 + ",  " +
-                        " "+ null +"); ";
-                sqLiteDatabase.execSQL(query1);
-            }
-        } catch (Exception e) {
-            Log.d("MainActivity", "Exception 발생 : " + e.getMessage());
-        }finally {
-            cursor = null;
-            sqLiteDatabase = null;
-        }
-    }
 
     //tab setting
     private void setTabFunction() {
@@ -398,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         tabSpecSix = tabHost.newTabSpec("SIX").setIndicator("6");
         tabSpecSeven = tabHost.newTabSpec("SEVEN").setIndicator("7");
         tabSpecEight = tabHost.newTabSpec("EIGHT").setIndicator("8");
-        tabSpecNine= tabHost.newTabSpec("NINE").setIndicator("9");
+        tabSpecNine = tabHost.newTabSpec("NINE").setIndicator("9");
         tabSpecTen = tabHost.newTabSpec("TEN").setIndicator("10");
         tabSpecEleven = tabHost.newTabSpec("ELEVEN").setIndicator("11");
 

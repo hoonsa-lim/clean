@@ -36,8 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="사진 설정"
-                android:textSize="25sp" />
+                android:text="공간 사진 설정"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="공간 이름"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                     android:hint="입력하세요"
                     android:singleLine="true"
                     android:textColor="#000000"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
 
@@ -90,12 +90,12 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <Button
+                <ImageButton
                     android:id="@+id/a1BtnCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="취소"
-                    android:textSize="25sp" />
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ripple_effect"
+                    tools:src="@drawable/backbutton" />
             </LinearLayout>
 
             <LinearLayout
@@ -105,12 +105,12 @@
                 android:gravity="right"
                 android:orientation="vertical">
 
-                <Button
+                <ImageButton
                     android:id="@+id/a1BtnNext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="다음"
-                    android:textSize="25sp" />
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ripple_effect"
+                    tools:src="@drawable/previous" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

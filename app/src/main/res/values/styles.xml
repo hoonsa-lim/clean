@@ -15,7 +15,7 @@
 
 
     <style name="NavyText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#061F5C</item>
+        <item name="android:textColor">#071f5d</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">@color/colorText</item>
@@ -23,7 +23,18 @@
 
     </style>
 
+    <style name="MyCustomDialogStyle" parent="@android:style/Theme.DeviceDefault.Dialog.NoActionBar.MinWidth">
 
+        <!-- Used for the background-->
+        <item name="android:background">#071f5d</item>
+
+        <!-- Used for the title and text-->
+        <item name="android:textColorPrimary">#ffffff</item>
+
+        <!-- title color + button color? -->
+        <item name="android:textColor">#ffffff</item>
+
+    </style>
 
 
 </resources>

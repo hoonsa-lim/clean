@@ -18,7 +18,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
-        android:text="기본 이미지" />
+        android:text="기본 이미지"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/btnGalleryImage"
@@ -28,5 +29,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
         android:layout_weight="1"
-        android:text="갤러리 이미지" />
+        android:text="갤러리 이미지"
+        android:textSize="14sp" />
 </LinearLayout>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#f4ffff</color>
-    <color name="colorPrimaryDark">#061F5C</color>
+    <color name="colorPrimaryDark">#071f5d</color>
     <color name="colorAccent">#D81B60</color>
     <color name="myColor1">#FAED7D</color>
     <color name="myCheckBoxColor">#03A9F4</color>
-    <color name="colorText">#061F5C</color>
+    <color name="colorSignature">#071f5d</color>
     <color name="black">#60BEB5</color>
     <color name="white">#ffffff</color>
+    <color name="colorText">#f4ffff</color>
 </resources>

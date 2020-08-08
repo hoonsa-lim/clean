@@ -14,6 +14,7 @@ import android.view.ViewPropertyAnimator;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ public class ListViewAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<SpaceData> arrayList;
     private boolean flag_visible_checkBox = false; // false 면 checkbox invisible
-    private LinearLayout par_big_linear;
+    private FrameLayout par_big_linear;
     private boolean flag;
 
     public ListViewAdapter(Context context, boolean flag_visible_checkBox) {

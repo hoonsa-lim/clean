@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -33,7 +34,8 @@ import java.util.ArrayList;
 public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.OnClickListener {
     //UI
     private EditText a1EtSpaceName;
-    private Button a1BtnCancel, a1BtnNext, a1BtnImageSetting;
+    private Button a1BtnImageSetting;
+    private ImageButton a1BtnCancel, a1BtnNext;
     private ImageView a1IvSpaceImage;
     private FrameLayout a1FrameLayout;
     public LinearLayout a1Linear_big;

@@ -3,12 +3,14 @@ package com.example.clean;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,7 +20,7 @@ public class ListViewAdapter_todayList extends BaseAdapter {
     private Context context;
     private ArrayList<TodayListData> arrayList;
     private boolean flag_visible_checkBox = false; // false 면 checkbox invisible
-    private LinearLayout par_big_linear;
+    private FrameLayout par_big_linear;
     private boolean flag;
 
     public ListViewAdapter_todayList(Context context, boolean flag_visible_checkBox) {
@@ -61,29 +63,20 @@ public class ListViewAdapter_todayList extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        view = layoutInflater.inflate(R.layout.listview_partition, null);
+        view = layoutInflater.inflate(R.layout.listview_partition_todaylist, null);
 
         //ui 찾기
-        TextView par_toDoName = view.findViewById(R.id.par_toDoName);
-        TextView par_time = view.findViewById(R.id.par_time);
-        TextView par_alarm = view.findViewById(R.id.par_alarm);
-        TextView par_tvRepetition = view.findViewById(R.id.par_tvRepetition);
-        final CheckBox par_checkBox = view.findViewById(R.id.par_checkBox);
-        LinearLayout par_linear = view.findViewById(R.id.par_linear);
-        LinearLayout par_linear_checkBox = view.findViewById(R.id.par_linear_checkBox);
-        LinearLayout par_linear_text = view.findViewById(R.id.par_linear_text);
-        par_big_linear = view.findViewById(R.id.par_big_linear);
+        TextView par_toDoName = view.findViewById(R.id.par_toDoName_today);
+        TextView par_time = view.findViewById(R.id.par_time_today);
+        TextView par_alarm = view.findViewById(R.id.par_alarm_today);
+        TextView par_tvRepetition = view.findViewById(R.id.par_tvRepetition_today);
+        LinearLayout par_linear = view.findViewById(R.id.par_linear_today);
+        LinearLayout par_linear_text = view.findViewById(R.id.par_linear_text_today);
+        LinearLayout linear_todaylist_selector = view.findViewById(R.id.linear_todaylist_selector);
+        par_big_linear = view.findViewById(R.id.par_big_linear_today);
 
-        //listview adapter 2번째 프래그 먼트에서 사용할 때와 1번째 프래그먼트에서 사용할 때를 구분함
-        final TodayListData todayListData = arrayList.get(i);
-        setValuesFunction(todayListData, par_toDoName, par_time, par_alarm, par_tvRepetition);
-        par_tvRepetition.setVisibility(View.GONE);
+        TodayListData todayListData = arrayList.get(i);
 
-        return view;
-    }
-
-    private void setValuesFunction(TodayListData todayListData, TextView par_toDoName, TextView par_time, TextView par_alarm, TextView par_tvRepetition) {
         //값 적용
         par_toDoName.setText(todayListData.getT_toDoName());
         par_time.setText(todayListData.getT_time());
@@ -92,5 +85,16 @@ public class ListViewAdapter_todayList extends BaseAdapter {
         } else {
             par_alarm.setText("알람 o");
         }
+
+        //취소선
+        if(todayListData.getT_clear() != 0){
+            par_big_linear.setAlpha(0.5f);
+            par_toDoName.setPaintFlags(par_toDoName.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+            par_time.setPaintFlags(par_time.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+            par_alarm.setPaintFlags(par_alarm.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
+        par_tvRepetition.setVisibility(View.GONE);
+        return view;
     }
 }

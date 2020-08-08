@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="닉 네 임"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/f1spinner"
@@ -71,7 +71,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="이     름"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/f1tvName"
@@ -104,7 +104,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="성     별"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/f1tvGender"
@@ -136,7 +136,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="나     이"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/f1tvAge"

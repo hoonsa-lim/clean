@@ -33,22 +33,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/f6IbNonClear"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="#00FFFFFF"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/big_add" />
-
-        <ImageButton
-            android:id="@+id/f6IbClear"
+        <TextView
+            android:id="@+id/todaylist_tvCount"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@color/colorAccent" />
-
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <ListView
