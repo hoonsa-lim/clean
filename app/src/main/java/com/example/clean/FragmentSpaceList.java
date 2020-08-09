@@ -62,6 +62,7 @@ public class FragmentSpaceList extends Fragment {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.spacelist_fragment, container, false);
         getActivity().setTitle("메인");
 
+
         //ui 찾기
         findViewByIdFunction(viewGroup);
 
@@ -142,6 +143,12 @@ public class FragmentSpaceList extends Fragment {
         arrayList = loadSpaceList();
         gridViewAdapter.notifyDataSetChanged();
         mainActivity.main_widget_linear.setVisibility(View.VISIBLE);
+        try {
+            mainActivity.menuSearch.setVisibility(View.VISIBLE);
+            mainActivity.mSearch.setVisible(true);
+        }catch (NullPointerException e){
+            Log.d("MainActivity", "NullPointerException" + e.getMessage());
+        }
     }
 
 

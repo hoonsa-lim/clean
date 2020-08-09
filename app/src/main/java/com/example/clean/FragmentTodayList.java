@@ -241,6 +241,8 @@ public class FragmentTodayList extends Fragment {
             //값 세팅
             setUIValues();
             listViewAdapter.notifyDataSetInvalidated();
+            mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+            mainActivity.mSearch.setVisible(false);
         }catch (NullPointerException e){
             Log.d("FragmentTodayList", "NullPointerException" + e.getMessage());
         }

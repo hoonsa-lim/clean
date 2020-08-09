@@ -69,6 +69,14 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
         mainActivity = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+        mainActivity.mSearch.setVisible(false);
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

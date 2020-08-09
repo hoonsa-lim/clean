@@ -63,6 +63,14 @@ public class FragmentProfileAdd extends Fragment {
         main3Activity = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        main3Activity.menuSearch.setVisibility(View.INVISIBLE);
+        main3Activity.mSearch.setVisible(false);
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

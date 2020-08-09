@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,13 +30,16 @@ public class FragmentChart extends Fragment {
 
     //db 값
     float countUnClear, countClear, countTotal;
-    ArrayList<TodayListData> todayListDataUnClear = new ArrayList<TodayListData>();
+    ArrayList<TodayListData> todayListDataTotal = new ArrayList<TodayListData>();
     ArrayList<TodayListData> todayListDataClear = new ArrayList<TodayListData>();
+
+    //ui
+    private TextView[] textViews = new TextView[3];
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        main3Activity = (MainActivity)getActivity();
+        main3Activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -47,12 +51,15 @@ public class FragmentChart extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.chart_fragment, container, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.chart_fragment, container, false);
         main3Activity.setTitle("통계");
 
         //UI
         chart1 = viewGroup.findViewById(R.id.f2tab1_chart_1);
         chart2 = viewGroup.findViewById(R.id.f2tab1_chart_2);
+        textViews[0] = viewGroup.findViewById(R.id.fragmentChart_tvToday1);
+        textViews[1] = viewGroup.findViewById(R.id.fragmentChart_tvToday2);
+        textViews[2] = viewGroup.findViewById(R.id.fragmentChart_tvToday3);
 
         //db로드
         loadDatabase();
@@ -63,6 +70,7 @@ public class FragmentChart extends Fragment {
 
         return viewGroup;
     }
+
     //db로드
     private void loadDatabase() {
         MyDBHelper myDBHelper = new MyDBHelper(main3Activity, "cleanDB");
@@ -73,76 +81,90 @@ public class FragmentChart extends Fragment {
             String query_unClear = "SELECT count(t_clear) FROM todayListTBL WHERE t_clear = 0;";
             cursor1 = sqLiteDatabase.rawQuery(query_unClear, null);
             cursor1.moveToFirst();
-            countUnClear = (float)cursor1.getInt(0);
+            countUnClear = (float) cursor1.getInt(0);
 
             //clear 한 총 개수
             String query_Clear = "SELECT count(t_clear) FROM todayListTBL WHERE t_clear = 1;";
             cursor2 = sqLiteDatabase.rawQuery(query_Clear, null);
             cursor2.moveToFirst();
-            countClear = (float)cursor2.getInt(0);
+            countClear = (float) cursor2.getInt(0);
 
             //총 개수
             countTotal = countUnClear + countClear;
-        }catch (Exception e){
-            Log.d("FragmentChart", "예외 발생 : unClear 개수, clear 개수"+ e.getMessage());
-        }finally {
+        } catch (Exception e) {
+            Log.d("FragmentChart", "예외 발생 : unClear 개수, clear 개수" + e.getMessage());
+        } finally {
             cursor1 = null;
             cursor2 = null;
-            sqLiteDatabase = null;
         }
 
-        try{
+        try {
             //최근 5일 중, 날짜별 clear 못한 개수
-            String top5UnClear = "SELECT t_today, count(t_clear) FROM todayListTBL WHERE t_clear = 0 GROUP by t_today ORDER by t_today DESC LIMIT 5;";
+            todayListDataTotal.clear();
+            String top5UnClear = "SELECT t_today, count(t_clear) FROM todayListTBL GROUP by t_today ORDER by t_today ASC LIMIT 5;";
             cursor1 = sqLiteDatabase.rawQuery(top5UnClear, null);
-            cursor1.moveToFirst();
-            while(cursor1.moveToNext()){
+            if (cursor1.getCount() <= 1) cursor1.moveToFirst();
+            while (cursor1.moveToNext()) {
                 TodayListData todayListData1 = new TodayListData(cursor1.getString(0), cursor1.getInt(1));
-                todayListDataUnClear.add(todayListData1);
+                todayListDataTotal.add(todayListData1);
             }
 
             //최근 5일 중, 날짜별 clear 한 개수
-            String top5Clear = "SELECT t_today, count(t_clear) FROM todayListTBL WHERE t_clear = 1 GROUP by t_today ORDER by t_today DESC LIMIT 5;";
+            todayListDataClear.clear();
+            String top5Clear = "SELECT t_today, count(t_clear) FROM todayListTBL WHERE t_clear = 1 GROUP by t_today ORDER by t_today ASC LIMIT 5;";
             cursor2 = sqLiteDatabase.rawQuery(top5Clear, null);
-            cursor2.moveToFirst();
-            while(cursor2.moveToNext()){
-                TodayListData todayListData2 = new TodayListData(cursor1.getString(0), cursor1.getInt(1));
+            if (cursor2.getCount() <= 1) cursor1.moveToFirst();
+            while (cursor2.moveToNext()) {
+                TodayListData todayListData2 = new TodayListData(cursor2.getString(0), cursor2.getInt(1));
                 todayListDataClear.add(todayListData2);
             }
 
-        }catch (Exception e){
-            Log.d("FragmentChart", "예외 발생 : 최근 5일 중, 날짜별 clear 못한 개수"+ e.getMessage());
+        } catch (Exception e) {
+            Log.d("FragmentChart", "예외 발생 : 최근 5일 중, 날짜별 clear 개수" + e.getMessage());
+        } finally {
+            cursor1 = null;
+            cursor2 = null;
+            sqLiteDatabase = null;
+
         }
-
-
-
     }
 
     // 파이 차트 설정
     private void setPieChart() {
-        float ratioClear = Math.round((((countClear / countTotal)*100.0f)*1000)/1000);
-        float ratioUnClear = Math.round((((countUnClear / countTotal)*100.0f)*1000)/1000);
+        float ratioClear = Math.round((((countClear / countTotal) * 100.0f) * 1000) / 1000);
+        float ratioUnClear = Math.round((((countUnClear / countTotal) * 100.0f) * 1000) / 1000);
 
         chart1.clearChart();
         chart1.setLegendTextSize(20.0f);
-        chart1.addPieSlice(new PieModel("clear 한 비율", ratioClear, Color.parseColor("#FA7268")));
-        chart1.addPieSlice(new PieModel("clear 못한 비율", ratioUnClear, Color.parseColor("#A879FC")));
+        chart1.addPieSlice(new PieModel("해결한 수", ratioClear, Color.parseColor("#FA7268")));
+        chart1.addPieSlice(new PieModel("미해결 수", ratioUnClear, Color.parseColor("#A879FC")));
         chart1.startAnimation();
 
     }
 
     // 막대 차트 설정
     private void setBarChart() {
+        try {
+            chart2.clearChart();
 
+            for (int i = 0; i < todayListDataTotal.size(); i++) {
+                TodayListData todayListData1 = todayListDataTotal.get(i);
+                TodayListData todayListData2 = todayListDataClear.get(i);
+                textViews[i].setText(todayListData1.getT_today());
+                chart2.addBar(new BarModel("", todayListData1.getT_clear(), Color.parseColor("#A879FC")));
+                chart2.addBar(new BarModel("", todayListData2.getT_clear(), Color.parseColor("#FA7268")));
+            }
 
-        chart2.clearChart();
-        chart2.addBar(new BarModel("12", 10f, Color.parseColor("#A879FC")));
-        chart2.addBar(new BarModel("13", 10f, Color.parseColor("#A879FC")));
-        chart2.addBar(new BarModel("14", 10f, Color.parseColor("#A879FC")));
-        chart2.addBar(new BarModel("15", 20f, Color.parseColor("#A879FC")));
-        chart2.addBar(new BarModel("16", 10f, Color.parseColor("#A879FC")));
-        chart2.addBar(new BarModel("17", 10f, Color.parseColor("#A879FC")));
-        chart2.startAnimation();
+            chart2.startAnimation();
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("FragmentChart", "IndexOutOfBoundsException 예외 발생 : " + e.getMessage());
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        main3Activity.menuSearch.setVisibility(View.INVISIBLE);
+        main3Activity.mSearch.setVisible(false);
     }
 }

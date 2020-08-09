@@ -85,7 +85,12 @@ public class FragmentCalender extends Fragment implements View.OnClickListener {
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+        mainActivity.mSearch.setVisible(false);
+    }
 }
 
 
