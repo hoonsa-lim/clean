@@ -118,13 +118,14 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
                 LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(R.layout.dialog_image_select, null);
 
                 builder = new AlertDialog.Builder(this, R.style.MyCustomDialogStyle);
+                final AlertDialog ad = builder.create();
                 Button btnBasicImage = linearLayout.findViewById(R.id.btnBasicImage);
                 Button btnGalleryImage = linearLayout.findViewById(R.id.btnGalleryImage);
-                builder.setNegativeButton("나가기", null);
                 btnBasicImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         a1IvSpaceImage.setImageResource(android.R.drawable.ic_menu_gallery);
+                        ad.dismiss();
                     }
                 });
                 btnGalleryImage.setOnClickListener(new View.OnClickListener() {
@@ -133,10 +134,11 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
                         Intent intent2 = new Intent(Intent.ACTION_PICK);
                         intent2.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                         startActivityForResult(intent2, GALLERY);
+                        ad.dismiss();
                     }
                 });
-                builder.setView(linearLayout);
-                builder.show();
+                ad.setView(linearLayout);
+                ad.show();
                 break;
             default:
                 break;

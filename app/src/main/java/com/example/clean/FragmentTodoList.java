@@ -133,7 +133,7 @@ public class FragmentTodoList extends Fragment {
             Bitmap imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
             a2IvImage.setImageBitmap(imageBitmap);
         } else {
-            a2IvImage.setImageResource(R.drawable.image_room_basic);
+            a2IvImage.setImageResource(android.R.drawable.ic_menu_gallery);
         }
         a2TvSpaceName.setText(spaceData.getSpaceName());
 
