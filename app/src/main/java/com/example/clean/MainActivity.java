@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<SpaceData> arrayList;
 
     //디비
-    private MyDBHelper myDBHelper = null;
+    private MyDBHelper myDBHelper;
     private SQLiteDatabase sqLiteDatabase;
 
     //메뉴
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                loadSpaceList(query);
                 return true;
             }
 
@@ -450,5 +452,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(InitActionReceiver);
+    }
+
+    //data load
+    public void loadSpaceList(String searchString) {
+        try {
+            MyDBHelper myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
+            SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
+//        myDBHelper.onUpgrade(sqLiteDatabase, 0,1);
+            String query = "SELECT image, spaceName FROM toDoListTBL WHERE spaceName = '" + searchString + "' GROUP by spaceName;";
+            Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+            cursor.moveToFirst();
+            if(cursor.getCount() != 0){
+                SpaceData spaceData = new SpaceData(cursor.getBlob(0), cursor.getString(1));
+                //메인으로 보내야함
+                ArrayList<SpaceData> arrayList1 = new ArrayList<SpaceData>();
+                arrayList1.add(spaceData);
+                arrayList1.add(new SpaceData(null, ""));
+
+                this.fragmentSpaceList.gridViewAdapter.setArrayList(arrayList1);
+                this.fragmentSpaceList.gridViewAdapter.notifyDataSetChanged();
+            }else{
+                searchDialogFunction();
+            }
+
+            cursor = null;
+            sqLiteDatabase = null;
+        }catch (Exception e){
+            Log.d("MainActivity", "loadSpaceList : 예외 발생" + e.getMessage());
+            searchDialogFunction();
+        }
+
+    }
+
+    //검색했을 때 dialog
+    public void searchDialogFunction(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
+        builder.setNegativeButton("확인", null);
+        builder.setMessage("알맞는 값이 없습니다.");
+        builder.show();
     }
 }

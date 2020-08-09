@@ -32,11 +32,11 @@ public class FragmentSpaceList extends Fragment {
     private MainActivity mainActivity;
 
     //UI
-    private GridView gridView;
+    public static GridView gridView;
 
     //list 출력
     private ArrayList<SpaceData> arrayList;
-    public GridViewAdapter gridViewAdapter;
+    public static GridViewAdapter gridViewAdapter;
 
     //long click
     private Point p;
@@ -142,10 +142,6 @@ public class FragmentSpaceList extends Fragment {
         arrayList = loadSpaceList();
         gridViewAdapter.notifyDataSetChanged();
         mainActivity.main_widget_linear.setVisibility(View.VISIBLE);
-
-
-
-
     }
 
 
