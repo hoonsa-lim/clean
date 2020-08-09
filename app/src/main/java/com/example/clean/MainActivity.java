@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<SpaceData> arrayList;
 
     //디비
-    private MyDBHelper myDBHelper = null;
+    private MyDBHelper myDBHelper;
     private SQLiteDatabase sqLiteDatabase;
 
     //메뉴
@@ -127,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         CurrentTabFuntion(0);
+
+        myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
     }
 
     public void CurrentTabFuntion(int i) {
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                loadSpaceList(query);
                 return true;
             }
 
@@ -381,9 +385,56 @@ public class MainActivity extends AppCompatActivity {
         first_time = System.currentTimeMillis();
     }
 
+    //data load
+    public void loadSpaceList(String searchString) {
+        try {
+            MyDBHelper myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
+            SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
+//        myDBHelper.onUpgrade(sqLiteDatabase, 0,1);
+            Log.d("MainActivity", "aaaaaaaaaaaaaaaaaaaa");
+            String query = "SELECT image, spaceName FROM toDoListTBL WHERE spaceName = '" + searchString + "' GROUP by spaceName;";
+            Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+            Log.d("MainActivity", "bbbbbbbbbbbbbb : 예외 발생" + searchString);
+            cursor.moveToFirst();
+            if(cursor.getCount() != 0){
+                Log.d("MainActivity", "ccccccccccccccccc");
+                SpaceData spaceData = new SpaceData(cursor.getBlob(0), cursor.getString(1));
+                Log.d("MainActivity", "dddddddddddddd");
+                //메인으로 보내야함
+                ArrayList<SpaceData> arrayList1 = new ArrayList<SpaceData>();
+                Log.d("MainActivity", "eeeeeeeeeeeeee");
+                arrayList1.add(spaceData);
+                Log.d("MainActivity", "fffffffffffff");
+                arrayList1.add(new SpaceData(null, ""));
+                Log.d("MainActivity", "ggggggggggggggggg");
 
+                this.fragmentSpaceList.gridViewAdapter.setArrayList(arrayList1);
+                Log.d("MainActivity", "333333333333");
+                this.fragmentSpaceList.gridViewAdapter.notifyDataSetChanged();
+            }else{
+                searchDialogFunction();
+            }
 
+            cursor = null;
+            sqLiteDatabase = null;
+        }catch (Exception e){
+            Log.d("MainActivity", "loadSpaceList : 예외 발생" + e.getMessage());
+            searchDialogFunction();
+        }
 
+    }
+
+    //검색했을 때 dialog
+    public void searchDialogFunction(){
+        Log.d("MainActivity", "4444444444444");
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
+        Log.d("MainActivity", "555555555555");
+        builder.setNegativeButton("확인", null);
+        Log.d("MainActivity", "666666666666666");
+        builder.setMessage("알맞는 값이 없습니다.");
+        Log.d("MainActivity", "777777777777");
+        builder.show();
+    }
 
 
 
