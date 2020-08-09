@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_bluecow_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AlarmEndActivity"></activity>
         <activity android:name=".OpeningActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TutorialGuideActivity"/>
+        <activity android:name=".TutorialGuideActivity" />
         <activity android:name=".InputProfileActivity" />
-        <activity android:name=".NickNameActivity"/>
+        <activity android:name=".NickNameActivity" />
         <activity android:name=".AddSpaceAndToDoActivity" />
         <activity android:name=".AppInfomationActivity" />
         <activity android:name=".MainActivity" />

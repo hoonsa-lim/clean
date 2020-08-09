@@ -168,12 +168,13 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                 fragmentFinishFunction();
                 break;
             case R.id.f1BtnSave:
-
                 String date;
                 String time = null;
+                MyDBHelper myDBHelper;
+                SQLiteDatabase sqLiteDatabase = null;
                 try {
-                    MyDBHelper myDBHelper = new MyDBHelper(addSpaceAndToDoActivity, "cleanDB");
-                    SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+                    myDBHelper = new MyDBHelper(addSpaceAndToDoActivity, "cleanDB");
+                    sqLiteDatabase = myDBHelper.getWritableDatabase();
                     byte[] image = spaceData.getImage();
                     String spaceName = spaceData.getSpaceName();
                     String toDoName = f1EtToDoName.getText().toString();
@@ -251,19 +252,9 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                 }
 
                 //알람
-                // 알람매니저 객체 만듬 : 안드로이드 시스템의 알람을 관리하는 놈 같음
-                alarm_manager = (AlarmManager) addSpaceAndToDoActivity.getSystemService(ALARM_SERVICE);
-
-                // Calendar 객체 생성 : 알람을 울리게 할 때 지절해줄 밀리초가 필요한데 현재 시스템의 정보를 빌려와서
-                //설정하는 방식으로 추정됨
-                final Calendar calendar = Calendar.getInstance();
-
-                // 알람리시버 intent 생성
-                final Intent my_intent = new Intent(addSpaceAndToDoActivity, AlarmReceiver.class);
 
                 // 시간 가져옴
                 String[] hourStr = time.split(":");
-
                 //시
                 if(hourStr[0].length() == 2){
                     String index0 = hourStr[0].substring(0,1);
@@ -280,21 +271,29 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                         hourStr[1] = index1;
                     }
                 }
-
                 int hour = Integer.parseInt(hourStr[0]);
                 int minute = Integer.parseInt(hourStr[1]);
                 Toast.makeText(addSpaceAndToDoActivity,"Alarm 예정 " + hour + "시 " + minute + "분",Toast.LENGTH_SHORT).show();
 
+                // 알람리시버 intent 생성
+                final Intent my_intent = new Intent(addSpaceAndToDoActivity, AlarmReceiver.class);
                 // reveiver에 string 값 넘겨주기
                 my_intent.putExtra("state","alarm on");
-
+                my_intent.putExtra("spaceName",  "공간 이름 : " + spaceData.getSpaceName());
+                my_intent.putExtra("todoName",  "할일 이름 : " + f1EtToDoName.getText().toString());
                 pendingIntent = PendingIntent.getBroadcast(addSpaceAndToDoActivity, 0, my_intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
                 // 알람셋팅
                 // calendar에 시간 셋팅
+                // Calendar 객체 생성 : 알람을 울리게 할 때 지정해줄 밀리초가 필요한데 현재 시스템의 정보를 빌려와서
+                //설정하는 방식으로 추정됨
+                final Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                 calendar.set(Calendar.MINUTE, minute);
+
+                // 알람매니저 객체 만듬 : 안드로이드 시스템의 알람을 관리하는 놈 같음
+                alarm_manager = (AlarmManager) addSpaceAndToDoActivity.getSystemService(ALARM_SERVICE);
                 alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         pendingIntent);
                 break;

@@ -98,6 +98,7 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
                             flag_sameName = true;
                         }
                     }
+
                     if(flag_sameName == true){
                         Toast.makeText(getApplicationContext(), "같은 이름의 공간이 존재합니다. \n 다른 이름으로 만들어주세요.", Toast.LENGTH_SHORT).show();
                     }else{
