@@ -3,11 +3,13 @@ package com.example.clean;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -20,6 +22,10 @@ public class RingtonePlayingService extends Service {
     int startId;//1이면 재생, 0이면 종료
     boolean isRunning; //media player 재생 상태
 
+    private PendingIntent pendingIntent = null;
+
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -29,6 +35,25 @@ public class RingtonePlayingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //전달 받은 값
+        String getState = intent.getExtras().getString("state");
+        String spaceName = intent.getExtras().getString("spaceName");
+        String todoName = intent.getExtras().getString("todoName");
+
+        //notification 눌렀을 때 나오는 화면
+        Intent intentAlarm = new Intent(getApplicationContext(), AlarmEndActivity.class);
+        intentAlarm.putExtra("spaceName", spaceName);
+        intentAlarm.putExtra("todoName",todoName);
+        pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(),
+                0,
+                intentAlarm,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         if (Build.VERSION.SDK_INT >= 26) {
             String CHANNEL_ID = "default";
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
@@ -39,19 +64,14 @@ public class RingtonePlayingService extends Service {
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle("알람시작")
-                    .setContentText("알람음이 재생됩니다.")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setAutoCancel(true)
+                    .setContentText("알람을 종료시키려면 '여기'를 클릭하세요.")
+                    .setSmallIcon(R.mipmap.ic_launcher_bluecow_foreground)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
                     .build();
 
             startForeground(1, notification);
         }
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        String getState = intent.getExtras().getString("state");
 
         //아이디의 상태가 여기서 결정됨
         assert getState != null;
@@ -111,8 +131,6 @@ public class RingtonePlayingService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         Log.d("onDestory() 실행", "서비스 파괴");
-
     }
 }

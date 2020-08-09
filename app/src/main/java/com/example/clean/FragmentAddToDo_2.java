@@ -1,7 +1,10 @@
 package com.example.clean;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
@@ -31,6 +34,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private MainActivity mainActivity;
@@ -54,6 +60,11 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
 
     //activity 에서 넘겨준 공간 등록한 정보, db 저장을 위해 넘겨 받음
     private SpaceData spaceData;
+
+
+    //알림
+    private AlarmManager alarm_manager;
+    private PendingIntent pendingIntent;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -174,6 +185,8 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                 fragmentFinishFunction();
                 break;
             case R.id.f1BtnSave:
+
+                String time = null;
                 try {
                     MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
                     SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
@@ -181,7 +194,7 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                     String spaceName = spaceData.getSpaceName();
                     String toDoName = f2EtToDoName.getText().toString();
                     String date = f2TvDate.getText().toString();
-                    String time = f2TvTime.getText().toString();
+                    time = f2TvTime.getText().toString();
 
                     //시간 00:00으로 자리수 맞추기
                     String[] array = time.split(":");
@@ -253,6 +266,53 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
                     Log.d("FragmentAddToDo_2", "ArrayIndexOutOfBoundsException, 저장 버튼 시 예외 발생 : " + e.getMessage());
                     Toast.makeText(mainActivity, "빈칸을 채워주세요.", Toast.LENGTH_SHORT).show();
                 }
+
+                //알람
+                // 시간 가져옴
+                String[] hourStr = time.split(":");
+                //시
+                if(hourStr[0].length() == 2){
+                    String index0 = hourStr[0].substring(0,1);
+                    String index1 = hourStr[0].substring(1,2);
+                    if(index0 == String.valueOf(0)){
+                        hourStr[0] = index1;
+                    }
+                }
+                //분
+                if(hourStr[1].length() == 2){
+                    String index0 = hourStr[1].substring(0,1);
+                    String index1 = hourStr[1].substring(1,2);
+                    if(index0 == String.valueOf(0)){
+                        hourStr[1] = index1;
+                    }
+                }
+                int hour = Integer.parseInt(hourStr[0]);
+                int minute = Integer.parseInt(hourStr[1]);
+                Toast.makeText(mainActivity,"Alarm 예정 " + hour + "시 " + minute + "분",Toast.LENGTH_SHORT).show();
+
+                // 알람리시버 intent 생성
+                final Intent my_intent = new Intent(mainActivity, AlarmReceiver.class);
+                // reveiver에 string 값 넘겨주기
+                my_intent.putExtra("state","alarm on");
+                my_intent.putExtra("spaceName",  "공간 이름 : " + spaceData.getSpaceName());
+                my_intent.putExtra("todoName",  "할일 이름 : " + f2EtToDoName.getText().toString());
+                pendingIntent = PendingIntent.getBroadcast(mainActivity, 0, my_intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // 알람셋팅
+                // calendar에 시간 셋팅
+                // Calendar 객체 생성 : 알람을 울리게 할 때 지정해줄 밀리초가 필요한데 현재 시스템의 정보를 빌려와서
+                //설정하는 방식으로 추정됨
+                final Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, hour);
+                calendar.set(Calendar.MINUTE, minute);
+
+                // 알람매니저 객체 만듬 : 안드로이드 시스템의 알람을 관리하는 놈 같음
+                alarm_manager = (AlarmManager) mainActivity.getSystemService(ALARM_SERVICE);
+                alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        pendingIntent);
+
+
                 break;
             default:
                 break;

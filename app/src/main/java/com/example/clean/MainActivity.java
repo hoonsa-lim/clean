@@ -407,31 +407,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        switch (selectedLastTab) {
-            case "ONE":
-            case "TWO":
-            case "THREE":
-                backPressedTwoFunction();
-                break;
-            case "FOUR":
-            case "FIVE":
-                tabHost.setCurrentTab(0);
-                break;
-            case "SIX":
-            case "SEVEN":
-                tabHost.setCurrentTab(4);
-                break;
-            case "EIGHT":
-            case "NINE":
-            case "TEN":
-            case "ELEVEN":
-            case "TWELVE":
-                tabHost.setCurrentTab(0);
-                break;
-            default:
-                break;
-        }
+        try {
+            switch (selectedLastTab) {
+                case "ONE":
+                case "TWO":
+                case "THREE":
+                    backPressedTwoFunction();
+                    break;
+                case "FOUR":
+                case "FIVE":
+                    tabHost.setCurrentTab(0);
+                    break;
+                case "SIX":
+                case "SEVEN":
+                    tabHost.setCurrentTab(4);
+                    break;
+                case "EIGHT":
+                case "NINE":
+                case "TEN":
+                case "ELEVEN":
+                case "TWELVE":
+                    tabHost.setCurrentTab(0);
+                    break;
+                default:
+                    break;
+            }
+        }catch (NullPointerException e){
+            Log.d("MainActivity", "NullPointerException" + e.getMessage());
 
+        }
 
     }
 
