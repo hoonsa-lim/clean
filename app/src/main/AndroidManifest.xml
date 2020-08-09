@@ -25,18 +25,6 @@
         <activity android:name=".AddSpaceAndToDoActivity" />
         <activity android:name=".AppInfomationActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".KakaoTest">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="kakaolink"
-                    android:scheme="5af85f5957afe27d852c81905b57dbcf" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

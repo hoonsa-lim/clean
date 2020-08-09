@@ -40,8 +40,8 @@
 
     <org.eazegraph.lib.charts.PieChart
         android:id="@+id/f2tab1_chart_1"
-        android:layout_width="392dp"
-        android:layout_height="311dp"
+        android:layout_width="387dp"
+        android:layout_height="239dp"
         android:layout_marginTop="8dp"
         android:padding="10dp"
         app:egLegendHeight="40dp"
@@ -56,8 +56,8 @@
 
     <org.eazegraph.lib.charts.BarChart
         android:id="@+id/f2tab1_chart_2"
-        android:layout_width="389dp"
-        android:layout_height="281dp"
+        android:layout_width="391dp"
+        android:layout_height="251dp"
         android:layout_marginTop="14dp"
         android:layout_marginBottom="30dp"
         android:paddingLeft="10dp"

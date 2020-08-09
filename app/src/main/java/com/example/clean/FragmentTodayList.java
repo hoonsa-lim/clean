@@ -4,27 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +26,17 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.LinkObject;
+import com.kakao.message.template.TemplateParams;
+import com.kakao.message.template.TextTemplate;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +63,9 @@ public class FragmentTodayList extends Fragment {
     //db
     private MyDBHelper myDBHelper;
     private SQLiteDatabase sqLiteDatabase;
+
+    //카카오톡 메세지 변수
+    TemplateParams params;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -91,6 +97,7 @@ public class FragmentTodayList extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, final int position, long l) {
+                final TodayListData todayListData = arrayList.get(position);
                 //다이얼로그 설정
                 AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
                 LayoutInflater layoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -152,7 +159,61 @@ public class FragmentTodayList extends Fragment {
                 dial_kakaoTalk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //다이얼로그 설정
+                        AlertDialog.Builder alert2 = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
+                        final AlertDialog ad = alert2.create();
+                        LayoutInflater layoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final View v2 = layoutInflater.inflate(R.layout.dialog_kakaotalk, null);
 
+                        final EditText edtKakao = v2.findViewById(R.id.dial_edtKakao);
+                        ImageButton dial_kakaoTalk2 = v2.findViewById(R.id.dial_kakaoTalk2);
+                        Button dial_exit = v2.findViewById(R.id.dial_exit);
+
+                        dial_kakaoTalk2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //카카오톡 메세지 세팅
+                                LinkObject link = LinkObject.newBuilder()
+                                        .setWebUrl("https://developers.kakao.com")
+                                        .setMobileWebUrl("https://developers.kakao.com")
+                                        .build();
+
+                                params = TextTemplate.newBuilder("공간 이름 : "+todayListData.getT_spaceName() + "\n" +
+                                        "할일 이름 : " + todayListData.getT_toDoName() + "\n" +
+                                        "메시지 내용 : " + edtKakao.getText().toString(), link)
+                                        .setButtonTitle(todayListData.getT_spaceName() + "/" +todayListData.getT_toDoName())
+                                        .build();
+
+                                // 기본 템플릿으로 카카오링크 보내기
+                                KakaoLinkService.getInstance()
+                                        .sendDefault(mainActivity, params, new ResponseCallback<KakaoLinkResponse>() {
+                                            @Override
+                                            public void onFailure(ErrorResult errorResult) {
+                                                Log.e("KAKAO_API", "카카오링크 공유 실패: " + errorResult);
+                                            }
+
+                                            @Override
+                                            public void onSuccess(KakaoLinkResponse result) {
+                                                Log.i("KAKAO_API", "카카오링크 공유 성공");
+
+                                                // 카카오링크 보내기에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
+                                                Log.w("KAKAO_API", "warning messages: " + result.getWarningMsg());
+                                                Log.w("KAKAO_API", "argument messages: " + result.getArgumentMsg());
+                                            }
+                                        });
+                            }
+                        });
+
+                        dial_exit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ad.dismiss();
+                            }
+                        });
+
+
+                        ad.setView(v2);
+                        ad.show();
                     }
                 });
 

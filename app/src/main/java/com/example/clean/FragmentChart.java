@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -151,6 +152,7 @@ public class FragmentChart extends Fragment {
                 TodayListData todayListData1 = todayListDataTotal.get(i);
                 TodayListData todayListData2 = todayListDataClear.get(i);
                 textViews[i].setText(todayListData1.getT_today());
+
                 chart2.addBar(new BarModel("", todayListData1.getT_clear(), Color.parseColor("#A879FC")));
                 chart2.addBar(new BarModel("", todayListData2.getT_clear(), Color.parseColor("#FA7268")));
             }
