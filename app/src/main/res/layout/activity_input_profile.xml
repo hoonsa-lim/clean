@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".NickNameActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +20,9 @@
             android:id="@+id/a2btnPrev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_stroke3"
             android:text="이전"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -31,7 +34,9 @@
             android:id="@+id/a2btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_stroke3"
             android:text="다음"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -60,6 +65,7 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:text="이름"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <EditText
@@ -68,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="#071f5d" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:text="성별"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <RadioGroup
@@ -104,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="남성"
+                android:textColor="#071f5d"
                 android:textSize="20sp" />
 
             <RadioButton
@@ -112,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="여성"
+                android:textColor="#071f5d"
                 android:textSize="20sp" />
         </RadioGroup>
 
@@ -136,6 +146,7 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:text="나이"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <EditText
@@ -144,7 +155,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="#071f5d" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

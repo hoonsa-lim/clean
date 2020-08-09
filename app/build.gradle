@@ -36,4 +36,8 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.30.0'
     implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
+
+    //샤인버튼 라이브러리 by 채현
+    implementation 'com.sackcentury:shinebutton:0.2.0'
+    implementation 'com.romandanylyk:pageindicatorview:1.0.2'
 }

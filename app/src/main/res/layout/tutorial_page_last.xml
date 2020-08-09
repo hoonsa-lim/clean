@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#071f5d"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cbEndTuto"
+            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:buttonTint="@color/white"
+            android:text="다시 보지 않기"
+            android:textColor="#ffffff" />
+
+        <ImageButton
+            android:id="@+id/btnTutoClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_cancel_black_24dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/tu5ImageView"
+        android:layout_width="352dp"
+        android:layout_height="480dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp" />
+
+
+</LinearLayout>

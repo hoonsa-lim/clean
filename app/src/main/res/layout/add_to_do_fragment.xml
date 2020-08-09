@@ -5,20 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".FragmentAddToDo">
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="409dp"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
         android:orientation="horizontal">
@@ -27,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="할일 이름"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <EditText
@@ -40,13 +36,13 @@
             android:gravity="center"
             android:hint="청소, 빨래 등"
             android:inputType="textPersonName"
-            android:textColor="#000000"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
     </LinearLayout>
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
@@ -55,15 +51,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시작 날짜"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <TextView
@@ -74,16 +73,16 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="클릭하여 설정하세요"
+            android:hint="클릭하여 설정하세요."
             android:inputType="textPersonName"
-            android:textColor="#000000"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
     </LinearLayout>
 
     <View
         android:id="@+id/divider2"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
@@ -94,13 +93,16 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시작 시간"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
         <TextView
@@ -111,16 +113,16 @@
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
-            android:hint="클릭하여 설정하세요"
+            android:hint="클릭하여 설정하세요."
             android:inputType="textPersonName"
-            android:textColor="#000000"
+            android:textColor="#071f5d"
             android:textSize="20sp" />
 
     </LinearLayout>
 
     <View
         android:id="@+id/divider5"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider" />
@@ -151,7 +153,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="15dp"
                     android:text="반 복"
+                    android:textColor="#071f5d"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -182,10 +186,11 @@
                     android:id="@+id/f1TvRepetition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="165dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="반복 요일 : "
-                    android:textColor="#000000"
+                    android:textColor="#071f5d"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -195,7 +200,7 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
@@ -204,16 +209,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="30dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="15dp"
             android:text="알 림"
+            android:textColor="#071f5d"
             android:textSize="20sp"
             tools:layout_editor_absoluteX="-9dp"
             tools:layout_editor_absoluteY="614dp" />
@@ -252,7 +261,9 @@
                 android:id="@+id/f1BtnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="뒤로"
+                android:background="@drawable/border_stroke3"
+                android:text="이전"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -267,7 +278,9 @@
                 android:id="@+id/f1BtnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/border_stroke3"
                 android:text="저장"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 

@@ -45,43 +45,52 @@
                         android:id="@android:id/tabcontent"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:background="#FFFFFF" />
+                        android:background="#FFFFFF" >
+
+                    </FrameLayout>
+
+                    <View
+                        android:id="@+id/divider9"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
 
                     <LinearLayout
                         android:id="@+id/main_widget_linear"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="60dp"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <ImageButton
                             android:id="@+id/main_ib1"
                             android:layout_width="50dp"
-                            android:layout_height="40dp"
+                            android:layout_height="60dp"
                             android:layout_weight="1"
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/big_add" />
+                            app:srcCompat="@drawable/big_add2" />
 
                         <ImageButton
                             android:id="@+id/main_ib2"
                             android:layout_width="30dp"
-                            android:layout_height="40dp"
+                            android:layout_height="60dp"
                             android:layout_weight="1"
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/list" />
+                            app:srcCompat="@drawable/list2" />
 
                         <ImageButton
                             android:id="@+id/main_ib3"
                             android:layout_width="50dp"
-                            android:layout_height="40dp"
+                            android:layout_height="60dp"
                             android:layout_weight="1"
                             android:background="@drawable/ripple_effect"
                             android:padding="5dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/calender" />
+                            app:srcCompat="@drawable/calender2" />
                     </LinearLayout>
 
                 </LinearLayout>

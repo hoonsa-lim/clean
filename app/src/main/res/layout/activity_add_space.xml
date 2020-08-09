@@ -5,7 +5,9 @@
     android:id="@+id/a1FrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".FragmentAddToDo">
 
 
@@ -27,16 +29,17 @@
                 android:id="@+id/a1IvSpaceImage"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
-                android:background="#000000"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/image_room_basic" />
 
             <Button
                 android:id="@+id/a1BtnImageSetting"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:background="@drawable/border_stroke3"
                 android:text="공간 사진 설정"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -55,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="공간 이름"
+                android:textColor="#071f5d"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -70,9 +74,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:hint="입력하세요"
+                    android:hint="입력하세요."
                     android:singleLine="true"
-                    android:textColor="#000000"
+                    android:textColor="#071f5d"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -90,12 +94,16 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <ImageButton
+                <Button
                     android:id="@+id/a1BtnCancel"
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ripple_effect"
-                    tools:src="@drawable/backbutton" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/border_stroke3"
+                    android:text="이전"
+                    android:textColor="@color/white" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -105,12 +113,16 @@
                 android:gravity="right"
                 android:orientation="vertical">
 
-                <ImageButton
+                <Button
                     android:id="@+id/a1BtnNext"
-                    android:layout_width="60dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/ripple_effect"
-                    tools:src="@drawable/previous" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/border_stroke3"
+                    android:text="다음"
+                    android:textColor="@color/white" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

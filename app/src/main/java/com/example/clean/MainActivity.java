@@ -3,6 +3,7 @@ package com.example.clean;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
@@ -10,6 +11,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -21,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -86,6 +90,22 @@ public class MainActivity extends AppCompatActivity {
     private AlarmManager alarm_manager;
     private PendingIntent pendingIntent;
 
+    //도움말
+    private InitActionReceiver InitActionReceiver;
+    private IntentFilter intentFilter;
+
+    //도움말 이동에 관련된 SharedPreferences by 재훈
+    SharedPreferences passTutorial;
+    int tutorialState;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentFilter=new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+        registerReceiver(InitActionReceiver,intentFilter);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +147,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         CurrentTabFuntion(0);
+
+        myDBHelper = new MyDBHelper(getApplicationContext(),"cleanDB");
+
+
+        //다시 보지 않기 설정 안할 시 자동으로 도움말로 이동
+        passTutorial = getSharedPreferences("change",MODE_PRIVATE);
+        tutorialState = passTutorial.getInt("First",0);
+        if(tutorialState != 1){
+            Intent intent = new Intent(getApplicationContext(), TutorialGuideActivity.class);
+            startActivity(intent);
+        }
+
+        InitActionReceiver = new InitActionReceiver();
     }
 
     public void CurrentTabFuntion(int i) {
@@ -168,23 +201,51 @@ public class MainActivity extends AppCompatActivity {
                 tabHost.setCurrentTab(8);
                 break;
             case R.id.menuSwitch:
-                View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_menu1, null);
+                final View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_menu1, null);
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
-                dialog.setView(dialogView);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
+                final AlertDialog ad = dialog.create();
+                ad.setView(dialogView);
 
-                Switch switch1 = dialogView.findViewById(R.id.switch1);
+                final Switch switch1 = dialogView.findViewById(R.id.switch1);
                 Button d1btnExit = dialogView.findViewById(R.id.d1btnExit);
+
+                //튜토리얼 관련 SharedPreferences
+                final SharedPreferences passTutorial = getApplicationContext().getSharedPreferences("change",MODE_PRIVATE);
+                int tutorialState = passTutorial.getInt("First",0);
+                if(tutorialState==1){
+                    switch1.setChecked(false);
+                }else if (tutorialState==0){
+                    switch1.setChecked(true);
+                }
+
+                switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(switch1.isChecked()){
+                            int intoTuto = 0;
+                            SharedPreferences.Editor editor = passTutorial.edit();
+                            editor.putInt("First",intoTuto);
+                            editor.commit();
+                            Toast.makeText(getApplicationContext(),"도움말 보기 설정",Toast.LENGTH_SHORT).show();
+                        }else {
+                            int intoMain = 1;
+                            SharedPreferences.Editor editor = passTutorial.edit();
+                            editor.putInt("First",intoMain);
+                            editor.commit();
+                            Toast.makeText(getApplicationContext(),"도움말 보기 해제",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
                 d1btnExit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        ad.dismiss();
                     }
                 });
 
-                dialog.show();
+                ad.show();
                 break;
             case R.id.menuProfileAdd:
                 tabHost.setCurrentTab(9);
@@ -196,7 +257,8 @@ public class MainActivity extends AppCompatActivity {
                 View dialogView2 = View.inflate(getApplicationContext(), R.layout.dialog_menu2, null);
 
                 AlertDialog.Builder dialog2 = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
-                dialog2.setView(dialogView2);
+                final AlertDialog ad2 = dialog2.create();
+                ad2.setView(dialogView2);
 
                 final EditText d2edtNickName = dialogView2.findViewById(R.id.d2edtNickName);
                 Button d2btnDelete = dialogView2.findViewById(R.id.d2btnDelete);
@@ -214,20 +276,18 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "프로필이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                         sqLiteDatabase.close();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        ad2.dismiss();
                     }
                 });
 
                 d2btnExit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        ad2.dismiss();
                     }
                 });
 
-                dialog2.show();
+                ad2.show();
                 break;
             case R.id.menuAppInfo:
                 Intent intent = new Intent(getApplicationContext(), AppInfomationActivity.class);
@@ -354,14 +414,19 @@ public class MainActivity extends AppCompatActivity {
                 backPressedTwoFunction();
                 break;
             case "FOUR":
-                tabHost.setCurrentTab(0);
             case "FIVE":
                 tabHost.setCurrentTab(0);
                 break;
             case "SIX":
-                tabHost.setCurrentTab(4);
             case "SEVEN":
                 tabHost.setCurrentTab(4);
+                break;
+            case "EIGHT":
+            case "NINE":
+            case "TEN":
+            case "ELEVEN":
+            case "TWELVE":
+                tabHost.setCurrentTab(0);
                 break;
             default:
                 break;
@@ -381,10 +446,9 @@ public class MainActivity extends AppCompatActivity {
         first_time = System.currentTimeMillis();
     }
 
-
-
-
-
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(InitActionReceiver);
+    }
 }

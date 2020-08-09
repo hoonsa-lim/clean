@@ -33,6 +33,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="0000년 00월"
+            android:textColor="#071f5d"
             android:textSize="25dp" />
 
         <ImageButton

@@ -12,17 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_bluecow_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".InputProfileActivity"></activity>
-        <activity android:name=".NickNameActivity">
+        <activity android:name=".OpeningActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddSpaceAndToDoActivity"></activity>
-        <activity android:name=".AppInfomationActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".TutorialGuideActivity"/>
+        <activity android:name=".InputProfileActivity" />
+        <activity android:name=".NickNameActivity"/>
+        <activity android:name=".AddSpaceAndToDoActivity" />
+        <activity android:name=".AppInfomationActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".KakaoTest">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -39,9 +41,12 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="5af85f5957afe27d852c81905b57dbcf" />
+
         <receiver android:name=".AlarmReceiver" />
+
         <service
             android:name=".RingtonePlayingService"
-            android:enabled="true"></service>
+            android:enabled="true" />
     </application>
+
 </manifest>

@@ -35,7 +35,7 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
     //UI
     private EditText a1EtSpaceName;
     private Button a1BtnImageSetting;
-    private ImageButton a1BtnCancel, a1BtnNext;
+    private Button a1BtnCancel, a1BtnNext;
     private ImageView a1IvSpaceImage;
     private FrameLayout a1FrameLayout;
     public LinearLayout a1Linear_big;

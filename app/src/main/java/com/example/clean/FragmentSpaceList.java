@@ -60,7 +60,7 @@ public class FragmentSpaceList extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.spacelist_fragment, container, false);
-        getActivity().setTitle("관리 공간 목록");
+        getActivity().setTitle("메인");
 
         //ui 찾기
         findViewByIdFunction(viewGroup);
