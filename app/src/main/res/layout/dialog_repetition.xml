@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="#071f5d"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="10dp"
@@ -14,63 +14,63 @@
         android:id="@+id/ckbMon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="월"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbTus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="화"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbWen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="수"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbTur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="목"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbFri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="금"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbSat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="토"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <CheckBox
         android:id="@+id/ckbSun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="#071f5d"
+        android:buttonTint="@color/white"
         android:text="일"
-        android:textColor="#071f5d"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
 </LinearLayout>

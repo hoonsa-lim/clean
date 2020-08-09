@@ -94,43 +94,68 @@ public class FragmentTodayList extends Fragment {
                 //다이얼로그 설정
                 AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
                 LayoutInflater layoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View v = layoutInflater.inflate(R.layout.dialog_listview_clear, null);
-                alert.setNegativeButton("아니오", null);
-                alert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                final View v = layoutInflater.inflate(R.layout.dialog_listview, null);
+
+                ImageButton dial_todaySuccess = v.findViewById(R.id.dial_todaySuccess);
+                ImageButton dial_kakaoTalk = v.findViewById(R.id.dial_kakaoTalk);
+
+                dial_todaySuccess.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        linearLayout_getview = (FrameLayout) view;
-                        linearLayout_getview.animate().alpha(1f).setDuration(500).withEndAction(new Runnable() {
+                    public void onClick(View v) {
+                        //다이얼로그 설정
+                        AlertDialog.Builder alert2 = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
+                        LayoutInflater layoutInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final View v2 = layoutInflater.inflate(R.layout.dialog_listview_clear, null);
+                        alert2.setNegativeButton("아니오", null);
+                        alert2.setPositiveButton("예", new DialogInterface.OnClickListener() {
                             @Override
-                            public void run() {
-                                linearLayout_getview.setAlpha(0.1f);
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                linearLayout_getview = (FrameLayout) view;
+                                linearLayout_getview.animate().alpha(1f).setDuration(500).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        linearLayout_getview.setAlpha(0.1f);
 
-                                TodayListData todayListData = arrayList.get(position);
-                                MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
-                                SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
-                                String query = null;
+                                        TodayListData todayListData = arrayList.get(position);
+                                        MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
+                                        SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
+                                        String query = null;
 
-                                if (arrayList.get(position).getT_clear() == 0) {
-                                    query = "update todayListTBL set t_clear = 1 where pk_fullName = '" + todayListData.getPk_fullName() + "';";
-                                } else if (arrayList.get(position).getT_clear() == 1) {
-                                    query = "update todayListTBL set t_clear = 0 where pk_fullName = '" + todayListData.getPk_fullName() + "';";
-                                }
-                                sqLiteDatabase.execSQL(query);
+                                        if (arrayList.get(position).getT_clear() == 0) {
+                                            query = "update todayListTBL set t_clear = 1 where pk_fullName = '" + todayListData.getPk_fullName() + "';";
+                                        } else if (arrayList.get(position).getT_clear() == 1) {
+                                            query = "update todayListTBL set t_clear = 0 where pk_fullName = '" + todayListData.getPk_fullName() + "';";
+                                        }
+                                        sqLiteDatabase.execSQL(query);
 
-                                listLoadFunction();
-                                setUIValues();
-                                f6ListView.invalidate();
-                                listViewAdapter.notifyDataSetInvalidated();
+                                        listLoadFunction();
+                                        setUIValues();
+                                        f6ListView.invalidate();
+                                        listViewAdapter.notifyDataSetInvalidated();
+                                    }
+                                }).start();
                             }
-                        }).start();
+                        });
+
+                        //text 설정
+                        TextView e1 = v2.findViewById(R.id.dial_editText1);
+                        EditText e2 = v2.findViewById(R.id.dial_editText2);
+                        e1.setText(arrayList.get(position).getT_spaceName());
+                        e2.setText(arrayList.get(position).getT_toDoName());
+
+                        alert2.setView(v2);
+                        alert2.show();
                     }
                 });
 
-                //text 설정
-                TextView e1 = v.findViewById(R.id.dial_editText1);
-                EditText e2 = v.findViewById(R.id.dial_editText2);
-                e1.setText(arrayList.get(position).getT_spaceName());
-                e2.setText(arrayList.get(position).getT_toDoName());
+
+                dial_kakaoTalk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
 
                 alert.setView(v);
                 alert.show();

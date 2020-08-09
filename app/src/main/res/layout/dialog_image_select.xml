@@ -5,37 +5,61 @@
     android:id="@+id/linear_gridView_partition"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
     android:gravity="center"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="5dp"
     tools:context=".FragmentAddToDo">
 
-    <Button
-        android:id="@+id/btnBasicImage"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:layout_weight="1"
-        android:background="@drawable/border_stroke3"
-        android:text="기본 이미지"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnGalleryImage"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="공간 사진 설정"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/border_stroke3"
-        android:text="갤러리 이미지"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnBasicImage"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_stroke2"
+            android:text="기본 이미지"
+            android:textColor="#071f5d"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnGalleryImage"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_stroke2"
+            android:text="갤러리 이미지"
+            android:textColor="#071f5d"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -98,8 +99,8 @@ public class FragmentTodoList extends Fragment {
                 sd.setSpaceName(spaceData.getSpaceName());
                 sd.setImage(spaceData.getImage());
                 p = new Point();
-                p.x = (int) view.getX() + 600;
-                p.y = (int) view.getY() + 1000;
+                p.x = (int) view.getX() + 650;
+                p.y = (int) view.getY() + 1200;
                 showPopup(mainActivity, p, sd, position);
                 return true;
             }
@@ -190,8 +191,8 @@ public class FragmentTodoList extends Fragment {
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
 
         // Getting a reference to Close button, and close the popup when clicked.
-        Button popup_btnEdit = (Button) layout.findViewById(R.id.popup_btnEdit);
-        Button popup_btnDelete = (Button) layout.findViewById(R.id.popup_btnDelete);
+        ImageButton popup_btnEdit = (ImageButton) layout.findViewById(R.id.popup_btnEdit);
+        ImageButton popup_btnDelete = (ImageButton) layout.findViewById(R.id.popup_btnDelete);
         popup_btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,8 +206,8 @@ public class FragmentTodoList extends Fragment {
         popup_btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity);
-                alert.setMessage("정말 삭제 하시겠습니까?");
+                AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
+                alert.setMessage("정말로 삭제 하시겠습니까?");
                 alert.setNegativeButton("취소", null);
                 alert.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override

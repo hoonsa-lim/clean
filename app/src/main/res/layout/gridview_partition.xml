@@ -19,7 +19,7 @@
         android:layout_marginRight="10dp"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher"
-        app:srcCompat="@drawable/image_room_basic" />
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <TextView
         android:id="@+id/gp_tvSpaceName"

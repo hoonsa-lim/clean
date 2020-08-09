@@ -78,7 +78,7 @@ public class GridViewAdapter extends BaseAdapter {
                 ivSpace.setBackgroundColor(00000000);
                 tvSpaceName.setText("공간 추가 하기");
             }else{
-                ivSpace.setImageResource(R.drawable.image_room_basic);
+                ivSpace.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         }
         tvSpaceName.setText(spaceData.getSpaceName());

@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center|left"
-        android:text="해당 목록의 상태를 변경하시겠습니까?"
+        android:text="오늘의 할일을 마무리 하시겠습니까?"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
@@ -34,7 +34,7 @@
         android:id="@+id/dial_editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="#071f5d"
         android:ems="10"
         android:enabled="false"
         android:gravity="center"
@@ -43,9 +43,29 @@
         android:textColorHint="#FFFFFF" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:orientation="horizontal"/>
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.5"
+            android:background="@drawable/border_stroke3"
+            app:srcCompat="@android:drawable/ic_dialog_alert" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8.5"
+            android:text="완료한 할일을 한번더 클릭하시면 완료하지 않은 상태로 돌아갑니다."
+            android:textColor="#01C0AD"
+            android:textSize="12sp" />
+    </LinearLayout>
 
 </LinearLayout>

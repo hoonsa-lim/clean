@@ -30,7 +30,7 @@
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/image_room_basic" />
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
 
             <Button
                 android:id="@+id/a1BtnImageSetting"

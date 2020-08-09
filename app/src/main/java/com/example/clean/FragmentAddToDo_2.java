@@ -259,7 +259,7 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
 
     //dialog function
     private void dialogFunction(final View view, final int num) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
         alertDialog.setView(view);
         alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)

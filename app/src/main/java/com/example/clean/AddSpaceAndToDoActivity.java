@@ -117,14 +117,14 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
                 LayoutInflater layoutInflater = getLayoutInflater();
                 LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(R.layout.dialog_image_select, null);
 
-                builder = new AlertDialog.Builder(this);
+                builder = new AlertDialog.Builder(this, R.style.MyCustomDialogStyle);
                 Button btnBasicImage = linearLayout.findViewById(R.id.btnBasicImage);
                 Button btnGalleryImage = linearLayout.findViewById(R.id.btnGalleryImage);
                 builder.setNegativeButton("나가기", null);
                 btnBasicImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a1IvSpaceImage.setImageResource(R.drawable.image_room_basic);
+                        a1IvSpaceImage.setImageResource(android.R.drawable.ic_menu_gallery);
                     }
                 });
                 btnGalleryImage.setOnClickListener(new View.OnClickListener() {
