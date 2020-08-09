@@ -80,6 +80,8 @@ public class FragmentAddToDo_2 extends Fragment implements View.OnClickListener,
         f2SpinnerAlarm.setSelection(0);
 
         mainActivity.main_widget_linear.setVisibility(View.GONE);
+        mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+        mainActivity.mSearch.setVisible(false);
     }
 
     @Nullable

@@ -164,6 +164,8 @@ public class FragmentTodoList extends Fragment {
     public void onResume() {
         super.onResume();
         a2Linear.setVisibility(View.VISIBLE);
+        mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+        mainActivity.mSearch.setVisible(false);
     }
 
     // The method that displays the popup.

@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase sqLiteDatabase;
 
     //메뉴
-    private MenuItem mSearch;
+    public static MenuItem mSearch;
+    public static SearchView menuSearch;
 
     //알림
     private AlarmManager alarm_manager;
@@ -102,10 +103,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        intentFilter=new IntentFilter();
+        intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
-        registerReceiver(InitActionReceiver,intentFilter);
-
+        registerReceiver(InitActionReceiver, intentFilter);
     }
 
     @Override
@@ -149,13 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
         CurrentTabFuntion(0);
 
-        myDBHelper = new MyDBHelper(getApplicationContext(),"cleanDB");
+        myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
 
 
         //다시 보지 않기 설정 안할 시 자동으로 도움말로 이동
-        passTutorial = getSharedPreferences("change",MODE_PRIVATE);
-        tutorialState = passTutorial.getInt("First",0);
-        if(tutorialState != 1){
+        passTutorial = getSharedPreferences("change", MODE_PRIVATE);
+        tutorialState = passTutorial.getInt("First", 0);
+        if (tutorialState != 1) {
             Intent intent = new Intent(getApplicationContext(), TutorialGuideActivity.class);
             startActivity(intent);
         }
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.option_menu, menu);
         mSearch = menu.findItem(R.id.menuSearch);
 
-        SearchView menuSearch = (SearchView) mSearch.getActionView();
+        menuSearch = (SearchView) mSearch.getActionView();
         menuSearch.setSubmitButtonEnabled(true);
         menuSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -213,29 +213,29 @@ public class MainActivity extends AppCompatActivity {
                 Button d1btnExit = dialogView.findViewById(R.id.d1btnExit);
 
                 //튜토리얼 관련 SharedPreferences
-                final SharedPreferences passTutorial = getApplicationContext().getSharedPreferences("change",MODE_PRIVATE);
-                int tutorialState = passTutorial.getInt("First",0);
-                if(tutorialState==1){
+                final SharedPreferences passTutorial = getApplicationContext().getSharedPreferences("change", MODE_PRIVATE);
+                int tutorialState = passTutorial.getInt("First", 0);
+                if (tutorialState == 1) {
                     switch1.setChecked(false);
-                }else if (tutorialState==0){
+                } else if (tutorialState == 0) {
                     switch1.setChecked(true);
                 }
 
                 switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(switch1.isChecked()){
+                        if (switch1.isChecked()) {
                             int intoTuto = 0;
                             SharedPreferences.Editor editor = passTutorial.edit();
-                            editor.putInt("First",intoTuto);
+                            editor.putInt("First", intoTuto);
                             editor.commit();
-                            Toast.makeText(getApplicationContext(),"도움말 보기 설정",Toast.LENGTH_SHORT).show();
-                        }else {
+                            Toast.makeText(getApplicationContext(), "도움말 보기 설정", Toast.LENGTH_SHORT).show();
+                        } else {
                             int intoMain = 1;
                             SharedPreferences.Editor editor = passTutorial.edit();
-                            editor.putInt("First",intoMain);
+                            editor.putInt("First", intoMain);
                             editor.commit();
-                            Toast.makeText(getApplicationContext(),"도움말 보기 해제",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "도움말 보기 해제", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -300,8 +300,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     //tab setting
@@ -463,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
             String query = "SELECT image, spaceName FROM toDoListTBL WHERE spaceName = '" + searchString + "' GROUP by spaceName;";
             Cursor cursor = sqLiteDatabase.rawQuery(query, null);
             cursor.moveToFirst();
-            if(cursor.getCount() != 0){
+            if (cursor.getCount() != 0) {
                 SpaceData spaceData = new SpaceData(cursor.getBlob(0), cursor.getString(1));
                 //메인으로 보내야함
                 ArrayList<SpaceData> arrayList1 = new ArrayList<SpaceData>();
@@ -472,13 +470,13 @@ public class MainActivity extends AppCompatActivity {
 
                 this.fragmentSpaceList.gridViewAdapter.setArrayList(arrayList1);
                 this.fragmentSpaceList.gridViewAdapter.notifyDataSetChanged();
-            }else{
+            } else {
                 searchDialogFunction();
             }
 
             cursor = null;
             sqLiteDatabase = null;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("MainActivity", "loadSpaceList : 예외 발생" + e.getMessage());
             searchDialogFunction();
         }
@@ -486,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //검색했을 때 dialog
-    public void searchDialogFunction(){
+    public void searchDialogFunction() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.MyCustomDialogStyle);
         builder.setNegativeButton("확인", null);
         builder.setMessage("알맞는 값이 없습니다.");

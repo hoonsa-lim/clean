@@ -115,6 +115,8 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivity.menuSearch.setVisibility(View.INVISIBLE);
+        mainActivity.mSearch.setVisible(false);
     }
 
     //main 반납 생명주기 마지막
