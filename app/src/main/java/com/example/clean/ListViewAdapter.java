@@ -122,16 +122,20 @@ public class ListViewAdapter extends BaseAdapter {
         String[] str = {spaceData.getMon(), spaceData.getTus(), spaceData.getWen(),
                 spaceData.getTur(), spaceData.getFri(), spaceData.getSat(), spaceData.getSun()};
         int count = 0;
-        for (int k = 0; k < str.length; k++) {
-            if (!str[k].equals("null")) {
-                repetition = repetition + " " + str[k];
-                count++;
+        try {
+            for (int k = 0; k < str.length; k++) {
+                if (!str[k].equals("null")) {
+                    repetition = repetition + " " + str[k];
+                    count++;
+                }
             }
-        }
-        if (count == 7) {
-            par_tvRepetition.setText("매일");
-        } else {
-            par_tvRepetition.setText(repetition);
+            if (count == 7) {
+                par_tvRepetition.setText("매일");
+            } else {
+                par_tvRepetition.setText(repetition);
+            }
+        }catch (NullPointerException e){
+            Log.d("ListViewAdpater", "NullPointerException");
         }
     }
 }

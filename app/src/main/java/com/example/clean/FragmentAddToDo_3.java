@@ -120,7 +120,7 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
         f3TvDate.setOnClickListener(this);
         f3TvTime.setOnClickListener(this);
         f3BtnBack.setOnClickListener(this);
-//        f3BtnSave.setOnClickListener(this);
+        f3BtnEdit.setOnClickListener(this);
         f3SpinnerRepetition.setOnItemSelectedListener(this);
         f3SpinnerAlarm.setOnItemSelectedListener(this);
 
@@ -311,7 +311,7 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                     } else {
                         //반복요일이 없는 것, 반복 안함!
                         String query = "UPDATE toDoListTBL " +
-                                "SET todoName = '" + toDoName + "' , date = '" + date + "' , time = '" + time + "' " +
+                                "SET todoName = '" + toDoName + "' , date = '" + date + "' , time = '" + time + "', " +
                                 "mon = null, tus = null, wen = null, tur = null, fri = null, sat = null, sun = null, " +
                                 "alarm = " + alarm + ", clear = 0 " +
                                 "where spaceName = '" + spaceName + "' and todoName = '" + spaceData.getToDoName() + "' " +

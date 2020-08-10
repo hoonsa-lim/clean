@@ -237,11 +237,20 @@ public class FragmentAddToDo extends Fragment implements View.OnClickListener, A
                             sqLiteDatabase.execSQL(query);
                         }
                     } else {
-                        //반복요일이 없는 것, 반복 안함!
-                        String query = "insert into toDoListTBL " +
-                                "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
-                                + time + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "', " + alarm + ",0);";
-                        sqLiteDatabase.execSQL(query);
+                        if (image != null) {
+                            //이미지 있는 것
+                            SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement( "insert into toDoListTBL " +
+                                    "values(?, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                    + time + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "', " + alarm + ",0);");
+                            sqLiteStatement.bindBlob(1, image);
+                            sqLiteStatement.execute();
+                        } else {
+                            //반복요일이 없는 것, 반복 안함!
+                            String query = "insert into toDoListTBL " +
+                                    "values(null, '" + spaceName + "', '" + toDoName + "', '" + date + "', '"
+                                    + time + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "',  '" + null + "', " + alarm + ",0);";
+                            sqLiteDatabase.execSQL(query);
+                        }
                     }
                     Toast.makeText(addSpaceAndToDoActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
                     addSpaceAndToDoActivity.finish();

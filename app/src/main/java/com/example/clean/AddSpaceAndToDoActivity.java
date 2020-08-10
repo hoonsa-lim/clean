@@ -49,7 +49,6 @@ public class AddSpaceAndToDoActivity extends AppCompatActivity implements View.O
     private ArrayList<SpaceData> arrayList = new ArrayList<SpaceData>();
     private boolean flag_sameName = false;
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -204,8 +204,8 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
                         ad.dismiss();
                     }
                 });
-                builder.setView(linearLayout);
-                builder.show();
+                ad.setView(linearLayout);
+                ad.show();
                 break;
             default:
                 break;
