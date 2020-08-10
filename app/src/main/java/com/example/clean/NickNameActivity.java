@@ -28,6 +28,7 @@ public class NickNameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nickname);
+        setTitle("닉네임 입력");
 
         edtNickName = findViewById(R.id.a1edtNickName);
         btnPrev = findViewById(R.id.a1btnPrev);

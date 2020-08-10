@@ -31,6 +31,7 @@ public class InputProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_profile);
+        setTitle("프로필 입력");
 
         edtName = findViewById(R.id.a2edtName);
         rgGender = findViewById(R.id.a2rgGender);
