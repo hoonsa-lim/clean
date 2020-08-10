@@ -98,9 +98,13 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
         //layout inflater :
         layoutInflater = getLayoutInflater();
 
-        //spaceData 받기
-        Bundle bundle = mainActivity.fragmentAddToDo_3.getArguments();
-        spaceData = bundle.getParcelable("spaceData1");
+        try {
+            //spaceData 받기
+            Bundle bundle = mainActivity.fragmentAddToDo_3.getArguments();
+            spaceData = bundle.getParcelable("spaceData1");
+        }catch (NullPointerException e){
+            Log.d("FragmentAddToDo", "NullPointerException : " + e.getMessage());
+        }
 
         //spinner 세팅
         setRepetitionSpinner();//반복
@@ -239,14 +243,16 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                 fragmentFinishFunction();
                 break;
             case R.id.f1BtnSave:
+                int alarm = 0;
                 String time = null;
+                String date = null;
                 try {
                     MyDBHelper myDBHelper = new MyDBHelper(mainActivity, "cleanDB");
                     SQLiteDatabase sqLiteDatabase = myDBHelper.getWritableDatabase();
                     byte[] image = spaceData.getImage();
                     String spaceName = spaceData.getSpaceName();
                     String toDoName = f3EtToDoName.getText().toString();
-                    String date = f3TvDate.getText().toString();
+                    date = f3TvDate.getText().toString();
                     time = f3TvTime.getText().toString();
 
                     //시간 00:00으로 자리수 맞추기
@@ -260,7 +266,7 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                     time = array[0] + ":" + array[1];
 
                     //알람
-                    int alarm = 0;
+                    alarm = 0;
                     if (f3SpinnerAlarm.getSelectedItem().toString().equals("알림")) {
                         alarm = 1;
                     }
@@ -278,7 +284,7 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
 
                     repetition = f3TvRepetition.getText().toString();
                     String[] array1 = repetition.split(":"); //"반복요일 : "를 버리기 위한
-                    Log.d("FragmentAddToDo_2", array1.length + "");
+                    Log.d("FragmentAddToDo_3", array1.length + "");
 
                     String[] array2 = new String[7];
                     if (array1.length > 1) { // null 이면 1값이 나옴,구분된 요일이 1개라도 있다면
@@ -291,14 +297,29 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                                 }
                             }
                         }
+                        //쿼리문 실행 : 반복 요일 선택한 값이 있는 것
+                        SQLiteStatement sqLiteStatement = sqLiteDatabase.compileStatement(
+                                "UPDATE toDoListTBL " +
+                                        "SET toDoName = '" + toDoName + "', date = '" + date + "', time = '" + time + "', " +
+                                        "mon = '" + arrayWeek[0] + "', tus = '" + arrayWeek[1] + "', wen = '" + arrayWeek[2] + "', tur = '" + arrayWeek[3] + "', " +
+                                        "fri = '" + arrayWeek[4] + "', sat = '" + arrayWeek[5] + "', sun = '" + arrayWeek[6] + "', " +
+                                        "alarm = " + alarm + ", clear = 0 " +
+                                        "where spaceName = '" + spaceName + "' and todoName = '" + spaceData.getToDoName() + "' " +
+                                        "and date = '" + spaceData.getDate() + "' and time = '" + spaceData.getTime() + "'; ");
+                        sqLiteStatement.execute();
+
                     } else {
-                        //쿼리문 : 반복요일이 없는 것, 반복 안함!
-
-
+                        //반복요일이 없는 것, 반복 안함!
+                        String query = "UPDATE toDoListTBL " +
+                                "SET todoName = '" + toDoName + "' , date = '" + date + "' , time = '" + time + "' " +
+                                "mon = null, tus = null, wen = null, tur = null, fri = null, sat = null, sun = null, " +
+                                "alarm = " + alarm + ", clear = 0 " +
+                                "where spaceName = '" + spaceName + "' and todoName = '" + spaceData.getToDoName() + "' " +
+                                "and date = '" + spaceData.getDate() + "' and time = '" + spaceData.getTime() + "'; ";
+                        sqLiteDatabase.execSQL(query);
                     }
                     Toast.makeText(mainActivity, "저장 됐습니다.", Toast.LENGTH_SHORT).show();
                     fragmentFinishFunction();
-
                 } catch (NullPointerException e) {
                     Log.d("FragmentAddToDo_3", "NullPointerException, 저장 버튼 시 예외 발생 : " + e.getMessage());
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -307,52 +328,51 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                 }
 
                 //알람
-                // 시간 가져옴
-                String[] hourStr = time.split(":");
-                //시
-                if(hourStr[0].length() == 2){
-                    String index0 = hourStr[0].substring(0,1);
-                    String index1 = hourStr[0].substring(1,2);
-                    if(index0 == String.valueOf(0)){
-                        hourStr[0] = index1;
+                if (alarm == 1) {
+                    // 시간 가져옴
+                    String[] hourStr = time.split(":");
+                    //시
+                    if (hourStr[0].length() == 2) {
+                        String index0 = hourStr[0].substring(0, 1);
+                        String index1 = hourStr[0].substring(1, 2);
+                        if (index0 == String.valueOf(0)) {
+                            hourStr[0] = index1;
+                        }
                     }
-                }
-                //분
-                if(hourStr[1].length() == 2){
-                    String index0 = hourStr[1].substring(0,1);
-                    String index1 = hourStr[1].substring(1,2);
-                    if(index0 == String.valueOf(0)){
-                        hourStr[1] = index1;
+                    //분
+                    if (hourStr[1].length() == 2) {
+                        String index0 = hourStr[1].substring(0, 1);
+                        String index1 = hourStr[1].substring(1, 2);
+                        if (index0 == String.valueOf(0)) {
+                            hourStr[1] = index1;
+                        }
                     }
+                    int hour = Integer.parseInt(hourStr[0]);
+                    int minute = Integer.parseInt(hourStr[1]);
+                    Toast.makeText(mainActivity, "< Alarm 예정 >\n" + date + "\n" + hour + "시 " + minute + "분", Toast.LENGTH_SHORT).show();
+
+                    // 알람리시버 intent 생성
+                    final Intent my_intent = new Intent(mainActivity, AlarmReceiver.class);
+                    // reveiver에 string 값 넘겨주기
+                    my_intent.putExtra("state", "alarm on");
+                    my_intent.putExtra("spaceName", "공간 이름 : " + spaceData.getSpaceName());
+                    my_intent.putExtra("todoName", "할일 이름 : " + f3EtToDoName.getText().toString());
+                    pendingIntent = PendingIntent.getBroadcast(mainActivity, 0, my_intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // 알람셋팅
+                    // calendar에 시간 셋팅
+                    // Calendar 객체 생성 : 알람을 울리게 할 때 지정해줄 밀리초가 필요한데 현재 시스템의 정보를 빌려와서
+                    //설정하는 방식으로 추정됨
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, hour);
+                    calendar.set(Calendar.MINUTE, minute);
+
+                    // 알람매니저 객체 만듬 : 안드로이드 시스템의 알람을 관리하는 놈 같음
+                    alarm_manager = (AlarmManager) mainActivity.getSystemService(ALARM_SERVICE);
+                    alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                            pendingIntent);
                 }
-                int hour = Integer.parseInt(hourStr[0]);
-                int minute = Integer.parseInt(hourStr[1]);
-                Toast.makeText(mainActivity,"Alarm 예정 " + hour + "시 " + minute + "분",Toast.LENGTH_SHORT).show();
-
-                // 알람리시버 intent 생성
-                final Intent my_intent = new Intent(mainActivity, AlarmReceiver.class);
-                // reveiver에 string 값 넘겨주기
-                my_intent.putExtra("state","alarm on");
-                my_intent.putExtra("spaceName",  "공간 이름 : " + spaceData.getSpaceName());
-                my_intent.putExtra("todoName",  "할일 이름 : " + f3EtToDoName.getText().toString());
-                pendingIntent = PendingIntent.getBroadcast(mainActivity, 0, my_intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // 알람셋팅
-                // calendar에 시간 셋팅
-                // Calendar 객체 생성 : 알람을 울리게 할 때 지정해줄 밀리초가 필요한데 현재 시스템의 정보를 빌려와서
-                //설정하는 방식으로 추정됨
-                final Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, hour);
-                calendar.set(Calendar.MINUTE, minute);
-
-                // 알람매니저 객체 만듬 : 안드로이드 시스템의 알람을 관리하는 놈 같음
-                alarm_manager = (AlarmManager) mainActivity.getSystemService(ALARM_SERVICE);
-                alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                        pendingIntent);
-
-
-
 
                 break;
             default:
@@ -375,14 +395,14 @@ public class FragmentAddToDo_3 extends Fragment implements View.OnClickListener,
                         int month = (datePicker.getMonth() + 1);
                         if (month < 10) {
                             strMonth = "0" + month;
-                        }else{
+                        } else {
                             strMonth = String.valueOf(month);
                         }
                         String strDay = null;
                         int day = datePicker.getDayOfMonth();
                         if (day < 10) {
                             strDay = "0" + day;
-                        }else{
+                        } else {
                             strDay = String.valueOf(day);
                         }
 

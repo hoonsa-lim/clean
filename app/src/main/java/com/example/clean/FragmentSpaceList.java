@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ public class FragmentSpaceList extends Fragment {
     public static GridView gridView;
 
     //list 출력
-    private ArrayList<SpaceData> arrayList;
+    public static ArrayList<SpaceData> arrayList;
     public static GridViewAdapter gridViewAdapter;
 
     //long click
@@ -61,7 +63,6 @@ public class FragmentSpaceList extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.spacelist_fragment, container, false);
         getActivity().setTitle("메인");
-
 
         //ui 찾기
         findViewByIdFunction(viewGroup);
@@ -106,9 +107,6 @@ public class FragmentSpaceList extends Fragment {
                 return true;
             }
         });
-
-
-
         return viewGroup;
     }
 
@@ -176,8 +174,8 @@ public class FragmentSpaceList extends Fragment {
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
 
         // Getting a reference to Close button, and close the popup when clicked.
-        Button popup_btnEdit = (Button) layout.findViewById(R.id.popup_btnEdit);
-        Button popup_btnDelete = (Button) layout.findViewById(R.id.popup_btnDelete);
+        ImageButton popup_btnEdit = (ImageButton) layout.findViewById(R.id.popup_btnEdit);
+        ImageButton popup_btnDelete = (ImageButton) layout.findViewById(R.id.popup_btnDelete);
         popup_btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +190,7 @@ public class FragmentSpaceList extends Fragment {
         popup_btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity);
+                AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity, R.style.MyCustomDialogStyle);
                 alert.setMessage("정말 삭제 하시겠습니까?");
                 alert.setNegativeButton("취소", null);
                 alert.setPositiveButton("삭제", new DialogInterface.OnClickListener() {

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:paddingTop="50dp"
         android:paddingBottom="20dp"
         android:text="현재시간"
         android:textColor="#FFFFFF"
@@ -25,8 +25,6 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         app:srcCompat="@drawable/bluecowmain" />
 
     <TextView
@@ -59,6 +57,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/border_stroke2"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="알람 종료 버튼"
         android:textColor="#071F5D"
         android:textSize="24sp" />
