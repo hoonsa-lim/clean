@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             MyDBHelper myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
             SQLiteDatabase sqLiteDatabase = myDBHelper.getReadableDatabase();
-            myDBHelper.onUpgrade(sqLiteDatabase, 0,1);
+//            myDBHelper.onUpgrade(sqLiteDatabase, 0,1);
             String query = "SELECT image, spaceName FROM toDoListTBL WHERE spaceName = '" + searchString + "' GROUP by spaceName;";
             Cursor cursor = sqLiteDatabase.rawQuery(query, null);
             cursor.moveToFirst();
