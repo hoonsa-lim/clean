@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public FragmentAddToDo_2 fragmentAddToDo_2; //1번째 fragment에서 공간을 눌렀을 때, 할일 추가 화면
     public FragmentAddToDo_3 fragmentAddToDo_3; //1번째 fragment에서 공간을 눌렀을 때, 할일 수정 화면
 
-    //카카오 테스트
-//    private TemplateParams params;
-//    ImageButton imageButtonkakao; 카카오 테스트
-
     //마지막 선택된 탭의 위치
     private String selectedLastTab;
 
@@ -150,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         CurrentTabFuntion(0);
 
         myDBHelper = new MyDBHelper(getApplicationContext(), "cleanDB");
-
 
         //다시 보지 않기 설정 안할 시 자동으로 도움말로 이동
         passTutorial = getSharedPreferences("change", MODE_PRIVATE);
@@ -318,18 +313,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentAddToDo_2 = new FragmentAddToDo_2();
         fragmentAddToDo_3 = new FragmentAddToDo_3();
 
-        //디자인 작업할 때 이 문장으로 수정
-//        //tab widget에 들어갈 icon 생성
-//        imageView1 = new ImageView(this);
-//        imageView2 = new ImageView(this);
-//        imageView3 = new ImageView(this);
-//        imageView1.setImageResource(R.drawable.tab_one);
-//        imageView2.setImageResource(R.drawable.tab_two);
-//        imageView3.setImageResource(R.drawable.tab_three);
-//        tabSpecOne = tabHost.newTabSpec("ONE").setIndicator(imageView1);
-//        tabSpecTwo = tabHost.newTabSpec("TWO").setIndicator(imageView2);
-//        tabSpecThree = tabHost.newTabSpec("THREE").setIndicator(imageView3);
-
         //tab spec 3개 생성
         tabSpecOne = tabHost.newTabSpec("ONE").setIndicator("1");
         tabSpecTwo = tabHost.newTabSpec("TWO").setIndicator("2");
@@ -371,35 +354,6 @@ public class MainActivity extends AppCompatActivity {
 //        imageButtonkakao = findViewById(R.id.imageButtonkakao);
     }
 
-
-//    public void kakao(){
-//        LinkObject link = LinkObject.newBuilder()
-//                .setWebUrl("https://developers.kakao.com")
-//                .setMobileWebUrl("https://developers.kakao.com")
-//                .build();
-//        TemplateParams params = TextTemplate.newBuilder("Text", link)
-//                .setButtonTitle("This is button")
-//                .build();
-//
-//        // 기본 템플릿으로 카카오링크 보내기
-//        KakaoLinkService.getInstance()
-//                .sendDefault(getApplicationContext(), params, new ResponseCallback<KakaoLinkResponse>() {
-//                    @Override
-//                    public void onFailure(ErrorResult errorResult) {
-//                        Log.e("KAKAO_API", "카카오링크 공유 실패: " + errorResult);
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(KakaoLinkResponse result) {
-//                        Log.i("KAKAO_API", "카카오링크 공유 성공");
-//
-//                        // 카카오링크 보내기에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
-//                        Log.w("KAKAO_API", "warning messages: " + result.getWarningMsg());
-//                        Log.w("KAKAO_API", "argument messages: " + result.getArgumentMsg());
-//                    }
-//                });
-//    }
-
     //뒤로가기 버튼 이벤트 2번 눌러서 종료
     //메인 tab이 아닌 fragment는 다른 페이지로 설정
     long first_time;
@@ -434,7 +388,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }catch (NullPointerException e){
             Log.d("MainActivity", "NullPointerException" + e.getMessage());
-
         }
 
     }
@@ -468,16 +421,14 @@ public class MainActivity extends AppCompatActivity {
             if (cursor.getCount() != 0) {
                 SpaceData spaceData = new SpaceData(cursor.getBlob(0), cursor.getString(1));
                 //메인으로 보내야함
-                ArrayList<SpaceData> arrayList1 = new ArrayList<SpaceData>();
-                arrayList1.add(spaceData);
-                arrayList1.add(new SpaceData(null, ""));
-
-                this.fragmentSpaceList.gridViewAdapter.setArrayList(arrayList1);
+                this.fragmentSpaceList.arrayList.clear();
+                this.fragmentSpaceList.arrayList.add(spaceData);
+                this.fragmentSpaceList.arrayList.add(new SpaceData(null, ""));
+                this.fragmentSpaceList.gridViewAdapter.setArrayList(this.fragmentSpaceList.arrayList);
                 this.fragmentSpaceList.gridViewAdapter.notifyDataSetChanged();
             } else {
                 searchDialogFunction();
             }
-
             cursor = null;
             sqLiteDatabase = null;
         } catch (Exception e) {

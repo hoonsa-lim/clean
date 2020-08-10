@@ -32,7 +32,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("drop table if exists myTBL");
         sqLiteDatabase.execSQL("drop table if exists toDoListTBL;");
-        sqLiteDatabase.execSQL("drop table if exists toDayListTBL;");
+        sqLiteDatabase.execSQL("drop table if exists todayListTBL;");
 
         onCreate(sqLiteDatabase);
     }

@@ -100,9 +100,9 @@ public class FragmentChart extends Fragment {
         }
 
         try {
-            //최근 5일 중, 날짜별 clear 못한 개수
+            //최근 3일 중, 날짜별 clear 못한 개수
             todayListDataTotal.clear();
-            String top5UnClear = "SELECT t_today, count(t_clear) FROM todayListTBL GROUP by t_today ORDER by t_today ASC LIMIT 3;";
+            String top5UnClear = "SELECT t_today, count(t_clear) FROM todayListTBL GROUP by t_today ORDER by t_today DESC LIMIT 3;";
             cursor1 = sqLiteDatabase.rawQuery(top5UnClear, null);
             if (cursor1.getCount() <= 1) cursor1.moveToFirst();
             while (cursor1.moveToNext()) {
@@ -110,9 +110,9 @@ public class FragmentChart extends Fragment {
                 todayListDataTotal.add(todayListData1);
             }
 
-            //최근 5일 중, 날짜별 clear 한 개수
+            //최근 3일 중, 날짜별 clear 한 개수
             todayListDataClear.clear();
-            String top5Clear = "SELECT t_today, count(t_clear) FROM todayListTBL WHERE t_clear = 1 GROUP by t_today ORDER by t_today ASC LIMIT 3;";
+            String top5Clear = "SELECT t_today, count(t_clear) FROM todayListTBL WHERE t_clear = 1 GROUP by t_today ORDER by t_today DESC LIMIT 3;";
             cursor2 = sqLiteDatabase.rawQuery(top5Clear, null);
             if (cursor2.getCount() <= 1) cursor1.moveToFirst();
             while (cursor2.moveToNext()) {

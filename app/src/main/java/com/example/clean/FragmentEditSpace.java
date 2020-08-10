@@ -75,24 +75,9 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
         //ui 찾기
         findViewByIdFunction(viewGroup);
 
-        //번들 받기
-        Bundle bundle = mainActivity.fragmentEditSpace.getArguments();
-        spaceData = bundle.getParcelable("spaceData1");
 
-        //값 세팅
-        a1BtnNext.setText("저장");
-        a1EtSpaceName.setText(spaceData.getSpaceName());
 
-        byte[] data = spaceData.getImage();
-        Bitmap imageBitmap = null;
-        if (spaceData.getImage() != null) {
-            imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-            a1IvSpaceImage.setImageBitmap(imageBitmap);
-        }else {
-            a1IvSpaceImage.setImageResource(R.drawable.image_room_basic);
-
-        }
 
         //이벤트
         a1BtnCancel.setOnClickListener(this);
@@ -117,6 +102,28 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
         super.onResume();
         mainActivity.menuSearch.setVisibility(View.INVISIBLE);
         mainActivity.mSearch.setVisible(false);
+
+        //번들 받기
+        Bundle bundle = mainActivity.fragmentEditSpace.getArguments();
+        spaceData = bundle.getParcelable("spaceData1");
+        bundle = null;
+
+        //값 세팅
+        a1BtnNext.setText("저장");
+        a1EtSpaceName.setText("");
+        a1EtSpaceName.setText(spaceData.getSpaceName());
+
+        //이미지 세팅
+        byte[] data = spaceData.getImage();
+        Bitmap imageBitmap = null;
+        if (spaceData.getImage() != null) {
+            imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            a1IvSpaceImage.setImageBitmap(imageBitmap);
+        }else {
+            a1IvSpaceImage.setImageResource(android.R.drawable.ic_menu_gallery);
+
+        }
     }
 
     //main 반납 생명주기 마지막
@@ -176,15 +183,16 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
                 LayoutInflater layoutInflater = getLayoutInflater();
                 LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(R.layout.dialog_image_select, null);
 
-                builder = new AlertDialog.Builder(mainActivity);
+                builder = new AlertDialog.Builder(mainActivity,R.style.MyCustomDialogStyle);
+                final AlertDialog ad = builder.create();
                 Button btnBasicImage = linearLayout.findViewById(R.id.btnBasicImage);
                 Button btnGalleryImage = linearLayout.findViewById(R.id.btnGalleryImage);
-                builder.setNegativeButton("나가기", null);
                 btnBasicImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        a1IvSpaceImage.setImageResource(R.drawable.image_room_basic);
+                        a1IvSpaceImage.setImageResource(android.R.drawable.ic_menu_gallery);
                         spaceData.setImage(null);
+                        ad.dismiss();
                     }
                 });
                 btnGalleryImage.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +201,7 @@ public class FragmentEditSpace extends Fragment implements View.OnClickListener 
                         Intent intent2 = new Intent(Intent.ACTION_PICK);
                         intent2.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                         startActivityForResult(intent2, GALLERY);
+                        ad.dismiss();
                     }
                 });
                 builder.setView(linearLayout);

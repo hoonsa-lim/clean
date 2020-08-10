@@ -25,7 +25,6 @@ public class RingtonePlayingService extends Service {
     private PendingIntent pendingIntent = null;
 
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,30 +46,35 @@ public class RingtonePlayingService extends Service {
         //notification 눌렀을 때 나오는 화면
         Intent intentAlarm = new Intent(getApplicationContext(), AlarmEndActivity.class);
         intentAlarm.putExtra("spaceName", spaceName);
-        intentAlarm.putExtra("todoName",todoName);
+        intentAlarm.putExtra("todoName", todoName);
         pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(),
                 0,
                 intentAlarm,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            String CHANNEL_ID = "default";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+        //state가 on일 때만 notification 발생
+        if (!getState.equals("alarm off")) {
+            if (Build.VERSION.SDK_INT >= 26) {
+                String CHANNEL_ID = "default";
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                        "Clean App",
+                        NotificationManager.IMPORTANCE_DEFAULT);
 
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("알람시작")
-                    .setContentText("알람을 종료시키려면 '여기'를 클릭하세요.")
-                    .setSmallIcon(R.mipmap.ic_launcher_bluecow_foreground)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setContentIntent(pendingIntent)
-                    .build();
+                Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setContentTitle("알람시작 : " + spaceName + "/" + todoName)
+                        .setContentText("알람을 종료시키려면 '여기'를 클릭하세요.")
+                        .setSmallIcon(R.mipmap.ic_launcher_bluecow_foreground)
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setContentIntent(pendingIntent)
+                        .build();
 
-            startForeground(1, notification);
+                startForeground(1, notification);
+            }
+        }else{
+            stopForeground(true);
         }
 
         //아이디의 상태가 여기서 결정됨
@@ -88,9 +92,9 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 X , 알람음 시작 클릭
-        if(!this.isRunning && startId == 1) {
+        if (!this.isRunning && startId == 1) {
 
-            mediaPlayer = MediaPlayer.create(this,R.raw.earth_bound_slynk);
+            mediaPlayer = MediaPlayer.create(this, R.raw.earth_bound_slynk);
             mediaPlayer.start();
 
             this.isRunning = true;
@@ -98,7 +102,7 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 O , 알람음 종료 버튼 클릭
-        else if(this.isRunning && startId == 0) {
+        else if (this.isRunning && startId == 0) {
 
             mediaPlayer.stop();
             mediaPlayer.reset();
@@ -109,7 +113,7 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 X , 알람음 종료 버튼 클릭
-        else if(!this.isRunning && startId == 0) {
+        else if (!this.isRunning && startId == 0) {
 
             this.isRunning = false;
             this.startId = 0;
@@ -117,13 +121,11 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 O , 알람음 시작 버튼 클릭
-        else if(this.isRunning && startId == 1){
+        else if (this.isRunning && startId == 1) {
 
             this.isRunning = true;
             this.startId = 1;
-        }
-
-        else {
+        } else {
         }
         return START_NOT_STICKY;
     }
